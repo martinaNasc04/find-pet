@@ -1,6 +1,7 @@
 'use client'
 import MobileMenu from "@/components/MobileMenu";
 import Navbar from "@/components/Navbar";
+import AboutSection from "@/components/sections/About";
 import HeroSection from "@/components/sections/Hero";
 import { useState } from "react";
 
@@ -12,6 +13,7 @@ export default function Home() {
       <MobileMenu menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
       <div className="mx-8">
         <HeroSection />
+        <AboutSection />
       </div>
     </div>
   );
