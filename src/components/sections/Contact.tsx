@@ -1,0 +1,42 @@
+import Image from 'next/image'
+import pawprint from '@/assets/paw-print.png'
+import catDraw from '@/assets/cat_draw.png'
+import instagram from '@/assets/svg/instagram-svgrepo-com.svg'
+import email from '@/assets/svg/email-1573-svgrepo-com.svg'
+import twitter from '@/assets/svg/twitter-svgrepo-com.svg'
+import phone from '@/assets/svg/phone-call-svgrepo-com.svg'
+
+const ContactSection = () => {
+    return (
+        <section id="contact" className="relative flex items-center justify-center min-h-screen ">
+            <Image src={pawprint} alt="pawprint" className=' opacity-20 w-fit' width={800} height={800} />
+            <div className='absolute items-center w-full md:space-y-6 md:flex md:flex-col'>
+                <div className='flex flex-col items-center space-y-5 md:w-1/2 md:space-y-10'>
+                    <h1 className='text-xl font-semibold md:text-3xl'>Contatos</h1>
+                    <ul className='grid grid-cols-2 gap-10'>
+                        <li className='flex items-center gap-2'>
+                            <Image src={instagram} alt="instagram" className='w-8 h-8 md:w-10 md:h-10' />
+                            <a href="#" className='font-medium md:text-2xl'>@findpet_oficial</a></li>
+                        <li className='flex items-center gap-2'>
+                            <Image src={twitter} alt="twiiter" className='w-8 h-8 md:w-10 md:h-10' />
+                            <a href="#" className='font-medium md:text-2xl'>@findpet_oficial</a></li>
+                        <li className='flex items-center gap-2'>
+                            <Image src={phone} alt="email" className='w-8 h-8 md:w-10 md:h-10' />
+                            <a href="#" className='font-medium md:text-2xl'>(11) 3434-3434</a></li>
+                        <li className='flex items-center gap-2'>
+                            <Image src={email} alt="email" className='w-8 h-8 md:w-10 md:h-10' />
+                            <a href="#" className='font-medium md:text-2xl'>findpet@pet.com</a></li>
+                    </ul>
+
+                </div>
+
+
+                <Image src={catDraw} alt="cat" className='hidden w-1/5 h-1/5 md:flex' />
+
+
+            </div>
+        </section>
+    )
+}
+
+export default ContactSection

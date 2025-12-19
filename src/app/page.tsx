@@ -2,6 +2,7 @@
 import MobileMenu from "@/components/MobileMenu";
 import Navbar from "@/components/Navbar";
 import AboutSection from "@/components/sections/About";
+import ContactSection from "@/components/sections/Contact";
 import HeroSection from "@/components/sections/Hero";
 import ServiceSection from "@/components/sections/Service";
 import { useState } from "react";
@@ -16,6 +17,7 @@ export default function Home() {
         <HeroSection />
         <AboutSection />
         <ServiceSection />
+        <ContactSection />
       </div>
     </div>
   );
