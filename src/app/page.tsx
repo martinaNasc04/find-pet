@@ -3,6 +3,7 @@ import MobileMenu from "@/components/MobileMenu";
 import Navbar from "@/components/Navbar";
 import AboutSection from "@/components/sections/About";
 import HeroSection from "@/components/sections/Hero";
+import ServiceSection from "@/components/sections/Service";
 import { useState } from "react";
 
 export default function Home() {
@@ -11,9 +12,10 @@ export default function Home() {
     <div className="min-h-screen">
       <Navbar menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
       <MobileMenu menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-      <div className="mx-8">
+      <div className="mx-10">
         <HeroSection />
         <AboutSection />
+        <ServiceSection />
       </div>
     </div>
   );

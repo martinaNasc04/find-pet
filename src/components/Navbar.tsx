@@ -10,7 +10,7 @@ const Navbar = ({ menuOpen, setMenuOpen }: { menuOpen: boolean, setMenuOpen: Rea
     }, [menuOpen])
 
     return (
-        <nav className='flex items-center justify-between font-bold text-(--moss-900) bg-(--parchment-100) py-2 md:py-3 px-8
+        <nav className='flex items-center justify-between font-bold text-(--moss-900) bg-(--parchment-100) py-2 md:py-3 px-10
         fixed top-0 z-40 w-full 
         backdrop-blur-lg  border-white/10 shadow-lg'>
 
