@@ -1,24 +1,15 @@
-'use client'
-import MobileMenu from "@/components/MobileMenu";
-import Navbar from "@/components/Navbar";
 import AboutSection from "@/components/sections/About";
 import ContactSection from "@/components/sections/Contact";
 import HeroSection from "@/components/sections/Hero";
-import ServiceSection from "@/components/sections/Service";
-import { useState } from "react";
+import PetsSection from "@/components/sections/Pets";
 
 export default function Home() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  return (
-    <div className="min-h-screen">
-      <Navbar menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-      <MobileMenu menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-      <div className="mx-10">
-        <HeroSection />
-        <AboutSection />
-        <ServiceSection />
-        <ContactSection />
-      </div>
-    </div>
-  );
+    return (
+        <div className="min-h-screen mx-8">
+            <HeroSection />
+            <AboutSection />
+            <PetsSection />
+            <ContactSection />
+        </div>
+    );
 }

@@ -1,6 +1,6 @@
 import Image from 'next/image'
-import pawprint from '@/assets/paw-print.png'
-import dog from '@/assets/dog1.png'
+import pawprint from '../../../public/assets/paw-print.png'
+import dog from '../../../public/assets/dog1.png'
 
 const AboutSection = () => {
     return (
@@ -9,7 +9,7 @@ const AboutSection = () => {
 
             <div className='absolute items-center w-full md:space-x-28 md:flex'>
                 <div className='space-y-4 md:w-1/2 md:space-y-6'>
-                    <h1 className='text-xl font-semibold md:text-3xl'>Sobre FindPet</h1>
+                    <h1 className='text-4xl font-semibold md:text-6xl'>Sobre FindPet</h1>
                     <div className='space-y-6'>
 
                         <p className='font-medium text-justify md:text-2xl'>Bem-vindo ao FindPet, sua plataforma dedicada a unir animais perdidos e aqueles que buscam um lar amoroso.
