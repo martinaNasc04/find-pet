@@ -10,6 +10,7 @@ import Image from "next/image";
 import { PawPrint } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import RecentPet from "@/components/RecentPet";
+import Link from "next/link";
 
 export default function Home() {
     return (
@@ -41,14 +42,14 @@ export default function Home() {
                             um amigo de quatro patas, estamos aqui para ajudar!
                         </h2>
 
-                        <Button
-                            size={"lg"}
-                            className="bg-[#3F51B5] font-semibold hover:bg-[#5969C5]/90 cursor-pointer"
-                        >
-                            Clique aqui!
-                        </Button>
-
-                        {/* Texto */}
+                        <Link href="/login">
+                            <Button
+                                size={"lg"}
+                                className="bg-[#3F51B5] font-semibold hover:bg-[#5969C5]/90 cursor-pointer"
+                            >
+                                Clique aqui!
+                            </Button>
+                        </Link>
                     </div>
                 </div>
                 <Image
