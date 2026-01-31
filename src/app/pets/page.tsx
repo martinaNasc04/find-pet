@@ -3,16 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
 import { Label } from "@radix-ui/react-label";
-import { SelectItem } from "@radix-ui/react-select";
 import Image from "next/image";
 import { useState } from "react";
 

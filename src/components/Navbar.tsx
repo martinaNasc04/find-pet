@@ -1,23 +1,11 @@
 "use client";
 import { UserButton, useUser } from "@clerk/nextjs";
-import { Menu, PawPrint } from "lucide-react";
-import { useEffect } from "react";
+import { PawPrint } from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 
-const Navbar = ({
-    menuOpen,
-    setMenuOpen,
-}: {
-    menuOpen: boolean;
-    setMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
+const Navbar = () => {
     const { isSignedIn, isLoaded } = useUser();
-
-    // verificar se menu está aberto
-    useEffect(() => {
-        document.body.style.overflow = menuOpen ? "hidden" : "";
-    }, [menuOpen]);
 
     return (
         <nav
