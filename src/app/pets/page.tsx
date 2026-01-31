@@ -39,7 +39,7 @@ export default function PetPage() {
     return (
         <div className="min-h-screen p-8 mt-10 bg-gray-50">
             {/* Tabs: Encontrado, Perdido, Adoção */}
-            <div className="max-w-6xl mx-auto mb-2 border-2 border-yellow-500">
+            <div className="max-w-6xl mx-auto mb-2">
                 <div className="flex items-center justify-center space-x-5">
                     {["perdido", "encontrado", "adocao"].map((tab) => (
                         <Button
