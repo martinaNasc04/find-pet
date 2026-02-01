@@ -7,7 +7,7 @@ import {
     timestamp,
     varchar,
 } from "drizzle-orm/pg-core";
-import { usersTable } from "./users";
+import { usersTable } from "./userSchema";
 // Pets Table
 export const statusEnum = pgEnum("status", ["perdido", "encontrado", "adocao"]);
 export const petsTable = pgTable("pets_table", {
