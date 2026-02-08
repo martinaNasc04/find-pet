@@ -6,17 +6,20 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { SignInButton, SignUpButton, useUser } from "@clerk/nextjs";
+import { SignInButton, SignUpButton, useAuth } from "@clerk/nextjs";
 import { PawPrint } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function LoginPage() {
     // Verificar se usuário está logado
-    const { isSignedIn } = useUser();
+    const { isSignedIn } = useAuth();
     const router = useRouter();
-    if (isSignedIn) {
-        router.push("/");
-    }
+    useEffect(() => {
+        if (isSignedIn) {
+            router.push("/");
+        }
+    }, [isSignedIn, router]);
     return (
         <div className="flex items-center justify-center min-h-screen">
             <Card className="w-full max-w-lg">
