@@ -13,10 +13,10 @@ const Navbar = () => {
         fixed top-0 z-40 w-full 
         backdrop-blur-lg  border-white/10 shadow-lg mb-10"
         >
-            <a href="#" className="flex items-center justify-center gap-2">
+            <Link href="/" className="flex items-center justify-center gap-2">
                 <h1 className="text-2xl">FindPet</h1>
                 <PawPrint className="w-8 h-8" />
-            </a>
+            </Link>
 
             {!isLoaded ? (
                 <div />
