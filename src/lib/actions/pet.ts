@@ -52,3 +52,11 @@ export const getRecentPets = async () => {
         .limit(5);
     return pets;
 };
+
+export const getPetById = async (id: number) => {
+    const pet = await db.select().from(petsTable).where(eq(petsTable.id, id));
+    if (!pet[0]) {
+        throw new Error("Pet not found");
+    }
+    return pet;
+};

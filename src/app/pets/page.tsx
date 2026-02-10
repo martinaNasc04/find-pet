@@ -6,6 +6,7 @@ import { Label } from "@radix-ui/react-label";
 import { useCallback, useEffect, useState } from "react";
 import { PetsDatabase } from "../../../type";
 import PetCard from "@/components/PetCard";
+import SpinnerSizesDemo from "@/components/customized/spinner/spinner-05";
 
 export default function PetPage() {
     const [activeTab, setActiveTab] = useState("perdido");
@@ -178,9 +179,10 @@ export default function PetPage() {
                     {/* Pet cards */}
                     {loading ? (
                         <div className="flex items-center justify-center">
-                            <p className="col-span-2 text-center text-gray-500">
+                            {/* <p className="col-span-2 text-center text-gray-500">
                                 Carregando...
-                            </p>
+                            </p> */}
+                            <SpinnerSizesDemo />
                         </div>
                     ) : pets.length === 0 ? (
                         <div className="flex items-center justify-center">
