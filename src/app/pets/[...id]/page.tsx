@@ -16,7 +16,7 @@ import Link from "next/link";
 export default async function ViewPetPage({
     params,
 }: {
-    params: Promise<{ id: number[] }>;
+    params: Promise<{ id: string[] }>;
 }) {
     const resolvedParams = await params;
     const petId = resolvedParams.id[0];
@@ -45,19 +45,34 @@ export default async function ViewPetPage({
         .select()
         .from(usersTable)
         .where(eq(usersTable.userId, petInfo[0].userId));
-    const { fullName } = userName[0];
+    const fullName = userName[0]?.fullName ?? "Usuário desconhecido";
 
-    const statusConfig: Record<string, { bg: string; label: string }> = {
-        perdido: { bg: "bg-red-100 text-red-800", label: "Perdido" },
-        encontrado: { bg: "bg-green-100 text-green-800", label: "Encontrado" },
-        adocao: { bg: "bg-blue-100 text-blue-800", label: "Adoção" },
+    const statusConfig: Record<
+        string,
+        { bg: string; bgLight: string; label: string }
+    > = {
+        perdido: {
+            bg: "bg-red-100 text-red-800",
+            bgLight: "bg-red-200",
+            label: "Perdido",
+        },
+        encontrado: {
+            bg: "bg-green-100 text-green-800",
+            bgLight: "bg-green-200",
+            label: "Encontrado",
+        },
+        adocao: {
+            bg: "bg-blue-100 text-blue-800",
+            bgLight: "bg-blue-200",
+            label: "Adoção",
+        },
     };
     const currentStatus = statusConfig[status];
     return (
         <div className="min-h-screen p-8 mt-10 bg-gray-50">
             <Link
                 href="/pets"
-                className={` bg-${currentStatus.bg}/50 rounded-lg px-4 py-2 mb-4`}
+                className={` bg-${currentStatus.bgLight} rounded-lg px-4 py-2 mb-4`}
             >
                 {" "}
                 <p className={`text-${currentStatus.bg} text-sm md:text-xl`}>

@@ -53,9 +53,12 @@ export const getRecentPets = async () => {
     return pets;
 };
 
-export const getPetById = async (id: number) => {
-    const pet = await db.select().from(petsTable).where(eq(petsTable.id, id));
-    if (!pet[0]) {
+export const getPetById = async (id: string) => {
+    const pet = await db
+        .select()
+        .from(petsTable)
+        .where(eq(petsTable.id, Number(id)));
+    if (!pet) {
         throw new Error("Pet not found");
     }
     return pet;
