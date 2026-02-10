@@ -1,9 +1,11 @@
 import { PetsDatabase } from "../../type";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
+import Link from "next/link";
+import { Button } from "./ui/button";
 
 export default function PetCard({ pet }: { pet: PetsDatabase }) {
-    const { name, age, location, imageUrl, status, createdAt } = pet;
+    const { id, name, age, location, imageUrl, status, createdAt } = pet;
 
     // Define a configuração de cores e rótulos para cada status
     const statusConfig: Record<string, { bg: string; label: string }> = {
@@ -17,12 +19,12 @@ export default function PetCard({ pet }: { pet: PetsDatabase }) {
             <CardContent className="p-0">
                 {/* Image */}
                 {imageUrl ? (
-                    <div className="relative w-full h-48 md:h-64">
+                    <div className="relative w-full aspect-square bg-gray-100 overflow-hidden rounded-lg">
                         <Image
                             src={imageUrl}
                             alt={`Photo of ${name}`}
                             fill
-                            className="object-cover"
+                            className="object-cover rounded-full"
                         />
                     </div>
                 ) : (
@@ -34,9 +36,19 @@ export default function PetCard({ pet }: { pet: PetsDatabase }) {
                 )}
 
                 <div className="p-4 space-y-2">
-                    <h3 className="text-lg font-semibold truncate md:text-xl">
-                        {name}
-                    </h3>
+                    <div className="flex justify-between items-center">
+                        <h3 className="text-lg font-semibold truncate md:text-xl">
+                            {name}
+                        </h3>
+                        <Link href={`/pets/${id}`}>
+                            <Button
+                                size="sm"
+                                className="bg-[#3F51B5] font-semibold hover:bg-[#5969C5]/90 cursor-pointer"
+                            >
+                                Ver detalhes
+                            </Button>
+                        </Link>
+                    </div>
                     <div className="space-y-1 text-sm text-gray-600 md:text-base">
                         <p className="text-sm md:text-xl">
                             <span className="font-semibold">Idade:</span>{" "}
