@@ -1,5 +1,7 @@
+import { SelectPet } from "@/db/schema/petSchema";
 import { PgEnum } from "drizzle-orm/pg-core";
 
+export type PetsDatabase = SelectPet;
 export type Pets = {
     id: number;
     name: string;
@@ -15,12 +17,6 @@ export type Pets = {
     createdAt: Date;
     updatedAt: Date;
 };
-
-enum Status {
-    Perdido = "perdido",
-    Encontrado = "encontrado",
-    Adocao = "adocao",
-}
 
 export type PetFilters = {
     status: PgEnum<"status", "perdido" | "encontrado" | "adocao">;

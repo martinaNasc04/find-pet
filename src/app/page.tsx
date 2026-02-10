@@ -10,9 +10,15 @@ import { SignedIn, SignedOut } from "@clerk/nextjs";
 import SignedInSection from "@/components/SignedInSection";
 import SignedOutSection from "@/components/SignedOutSection";
 import AboutSection from "@/components/About";
+import { getRecentPets } from "@/lib/actions/pet";
 
-// import { getAllUsers } from "@/lib/actions/user";
-export default function Home() {
+export default async function Home() {
+    let recentPets: any = [];
+    try {
+        recentPets = await getRecentPets();
+    } catch (error) {
+        console.error("Falha ao buscar pets recentes:", error);
+    }
     return (
         <div className="min-h-screen mx-8">
             <SignedOut>
@@ -33,7 +39,7 @@ export default function Home() {
                                 Animais postados recentemente
                             </h1>
 
-                            <RecentPet />
+                            <RecentPet initialPets={recentPets} />
                         </div>
                     </div>
                 </section>
