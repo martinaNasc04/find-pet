@@ -27,7 +27,7 @@ export default function PetCard({ pet }: { pet: PetsDatabase }) {
                     </div>
                 ) : (
                     <div className="relative w-full h-48 md:h-64 bg-gray-300 flex items-center justify-center">
-                        <p className="text-gray-500 text-2xl md:text-lg">
+                        <p className="text-gray-500 text-lg md:text-2xl">
                             Sem imagem
                         </p>
                     </div>
