@@ -4,12 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
 import { useCallback, useEffect, useState } from "react";
-import { Pets } from "../../../type";
+import { PetsDatabase } from "../../../type";
 import PetCard from "@/components/PetCard";
 
 export default function PetPage() {
     const [activeTab, setActiveTab] = useState("perdido");
-    const [pets, setPets] = useState<Pets[]>([]);
+    const [pets, setPets] = useState<PetsDatabase[]>([]);
     const [loading, setLoading] = useState(false);
 
     //Filtros

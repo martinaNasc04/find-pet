@@ -1,8 +1,8 @@
-import { Pets } from "../../type";
+import { PetsDatabase } from "../../type";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 
-export default function PetCard({ pet }: { pet: Pets }) {
+export default function PetCard({ pet }: { pet: PetsDatabase }) {
     const { name, age, location, imageUrl, status, createdAt } = pet;
 
     // Define a configuração de cores e rótulos para cada status
@@ -16,14 +16,22 @@ export default function PetCard({ pet }: { pet: Pets }) {
         <Card className="overflow-hidden">
             <CardContent className="p-0">
                 {/* Image */}
-                <div className="relative w-full h-48 md:h-64">
-                    <Image
-                        src={imageUrl}
-                        alt={`Photo of ${name}`}
-                        fill
-                        className="object-cover"
-                    />
-                </div>
+                {imageUrl ? (
+                    <div className="relative w-full h-48 md:h-64">
+                        <Image
+                            src={imageUrl}
+                            alt={`Photo of ${name}`}
+                            fill
+                            className="object-cover"
+                        />
+                    </div>
+                ) : (
+                    <div className="relative w-full h-48 md:h-64 bg-gray-300 flex items-center justify-center">
+                        <p className="text-gray-500 text-2xl md:text-lg">
+                            Sem imagem
+                        </p>
+                    </div>
+                )}
 
                 <div className="p-4 space-y-2">
                     <h3 className="text-lg font-semibold truncate md:text-xl">

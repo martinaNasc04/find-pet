@@ -19,7 +19,7 @@ export const petsTable = pgTable("pets_table", {
     imageUrl: varchar("imageUrl", { length: 255 }),
     age: integer(),
     location: varchar({ length: 255 }).notNull(),
-    status: statusEnum(),
+    status: statusEnum().notNull(),
     description: text(),
     userId: integer("userId")
         .notNull()

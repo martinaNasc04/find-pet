@@ -1,7 +1,7 @@
 import { db } from "@/db";
 import { petsTable } from "@/db/schema/petSchema";
 import { PetFilters } from "../../../type";
-import { and, eq, ilike, or } from "drizzle-orm";
+import { and, desc, eq, ilike, or } from "drizzle-orm";
 
 export const getPetsWithFilters = async (filters: PetFilters) => {
     if (!filters.status) {
@@ -42,4 +42,13 @@ export const getPetsWithFilters = async (filters: PetFilters) => {
     return {
         pets: results,
     };
+};
+
+export const getRecentPets = async () => {
+    const pets = await db
+        .select()
+        .from(petsTable)
+        .orderBy(desc(petsTable.createdAt))
+        .limit(5);
+    return pets;
 };
