@@ -1,10 +1,11 @@
 "use client";
 import InsertPetForm from "@/components/InsertPetForm";
 import { useUser } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 
 export default function NewPetPage() {
     // Verificar se usuário está logado para acessar essa rota
-    const { isLoaded } = useUser();
+    const { isLoaded, isSignedIn } = useUser();
 
     if (!isLoaded) {
         return (
@@ -17,5 +18,10 @@ export default function NewPetPage() {
             </div>
         );
     }
+
+    if (!isSignedIn) {
+        redirect("/sign-in");
+    }
+
     return <InsertPetForm />;
 }

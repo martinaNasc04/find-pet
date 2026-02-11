@@ -18,7 +18,7 @@ export default function InsertPetForm() {
         <div className="min-h-screen p-8 mt-10 bg-gray-50">
             <div className="max-w-6xl mx-auto mb-2 space-y-4">
                 <h1 className="text-2xl font-bold">Poste o pet aqui</h1>
-                <div className="w-full flex flex-col items-center justify-center">
+                <div className="flex flex-col items-center justify-center w-full">
                     <Card className="w-full max-w-xl">
                         <CardHeader className="border-b-2 border-indigo-100">
                             <CardTitle>Coloque as informações do pet</CardTitle>
@@ -29,7 +29,7 @@ export default function InsertPetForm() {
                                     <div className="grid gap-2 ">
                                         <Label
                                             htmlFor="name"
-                                            className="block text-sm md:text-base font-medium text-gray-700"
+                                            className="block text-sm font-medium text-gray-700 md:text-base"
                                         >
                                             Nome:
                                         </Label>
@@ -45,7 +45,7 @@ export default function InsertPetForm() {
                                     <div className="grid gap-2">
                                         <Label
                                             htmlFor="breed"
-                                            className="block text-sm md:text-base font-medium text-gray-700"
+                                            className="block text-sm font-medium text-gray-700 md:text-base"
                                         >
                                             Raça:
                                         </Label>
@@ -61,9 +61,9 @@ export default function InsertPetForm() {
                                     <div className="grid gap-2">
                                         <Label
                                             htmlFor="color"
-                                            className="block text-sm md:text-base font-medium text-gray-700"
+                                            className="block text-sm font-medium text-gray-700 md:text-base"
                                         >
-                                            Cor
+                                            Cor:
                                         </Label>
                                         <Input
                                             id="color"
@@ -77,7 +77,7 @@ export default function InsertPetForm() {
                                     <div className="grid gap-2">
                                         <Label
                                             htmlFor="typePet"
-                                            className="block text-sm md:text-base font-medium text-gray-700"
+                                            className="block text-sm font-medium text-gray-700 md:text-base"
                                         >
                                             Tipo de pet:
                                         </Label>
@@ -93,7 +93,7 @@ export default function InsertPetForm() {
                                     <div className="grid gap-2">
                                         <Label
                                             htmlFor="imageUrl"
-                                            className="block text-sm md:text-base font-medium text-gray-700"
+                                            className="block text-sm font-medium text-gray-700 md:text-base"
                                         >
                                             Imagem:
                                         </Label>
@@ -109,7 +109,7 @@ export default function InsertPetForm() {
                                     <div className="grid gap-2">
                                         <Label
                                             htmlFor="age"
-                                            className="block text-sm md:text-base font-medium text-gray-700"
+                                            className="block text-sm font-medium text-gray-700 md:text-base"
                                         >
                                             Idade:
                                         </Label>
@@ -125,7 +125,7 @@ export default function InsertPetForm() {
                                     <div className="grid gap-2">
                                         <Label
                                             htmlFor="location"
-                                            className="block text-sm md:text-base font-medium text-gray-700"
+                                            className="block text-sm font-medium text-gray-700 md:text-base"
                                         >
                                             Local:
                                         </Label>
@@ -141,15 +141,15 @@ export default function InsertPetForm() {
                                     <div className="grid gap-2">
                                         <Label
                                             htmlFor="status"
-                                            className="block text-sm md:text-base font-medium text-gray-700"
+                                            className="block text-sm font-medium text-gray-700 md:text-base"
                                         >
                                             Status:
                                         </Label>
                                         <Input
                                             id="status"
                                             name="status"
-                                            type="name"
-                                            placeholder="Insira o nome do pet"
+                                            type="text"
+                                            placeholder="Insira o status do pet"
                                             required
                                             className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500"
                                         />
@@ -158,7 +158,7 @@ export default function InsertPetForm() {
                                 <div className="grid gap-2 mt-6">
                                     <Label
                                         htmlFor="description"
-                                        className="block text-sm md:text-base font-medium text-gray-700"
+                                        className="block text-sm font-medium text-gray-700 md:text-base"
                                     >
                                         Descrição:
                                     </Label>
@@ -173,14 +173,14 @@ export default function InsertPetForm() {
                                 </div>
                             </form>
                         </CardContent>
-                        <CardFooter className="flex-col gap-2">
-                            <Button type="submit" className="w-full">
+                        <div className="flex flex-col items-center gap-4 px-4 mt-6 ">
+                            <Button type="submit" className="w-lg">
                                 Salvar
                             </Button>
-                            <Button variant="outline" className="w-full">
+                            <Button variant="outline" className="w-lg">
                                 Cancelar
                             </Button>
-                        </CardFooter>
+                        </div>
                     </Card>
                 </div>
             </div>
