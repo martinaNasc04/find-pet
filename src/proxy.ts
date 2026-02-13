@@ -4,6 +4,7 @@ const isProtectedRoute = createRouteMatcher([
     "/pets/new",
     "/pets/view(.*)",
     "/pets/edit(.*)",
+    "/users/(.*)",
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
