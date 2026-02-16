@@ -7,11 +7,14 @@ import { useCallback, useEffect, useState } from "react";
 import { PetsDatabase } from "../../../type";
 import PetCard from "@/components/PetCard";
 import SpinnerSizesDemo from "@/components/customized/spinner/spinner-05";
+import { useAuth } from "@clerk/nextjs";
+import Link from "next/link";
 
 export default function PetPage() {
     const [activeTab, setActiveTab] = useState("perdido");
     const [pets, setPets] = useState<PetsDatabase[]>([]);
     const [loading, setLoading] = useState(false);
+    const { isSignedIn } = useAuth();
 
     //Filtros
     const [searchQuery, setSearchQuery] = useState("");
@@ -86,6 +89,20 @@ export default function PetPage() {
                         </Button>
                     ))}
                     {/* Adicionar botões para adicionar pets and visualizar o pet postado */}
+                    {isSignedIn && (
+                        <div className="flex gap-2">
+                            <Link href="/pets/new">
+                                <Button className="px-3 py-2 font-semibold text-white transition-all bg-orange-500 border-2 border-orange-300 rounded-lg cursor-pointer md:px-6 hover:bg-white hover:text-orange-500">
+                                    Anunciar um pet
+                                </Button>
+                            </Link>
+                            <Link href="/pets/view">
+                                <Button className="px-3 py-2 font-semibold text-white transition-all border-2 rounded-lg cursor-pointer mb:px-6 bg-violet-500 hover:bg-white hover:text-violet-500 border-violet-300">
+                                    Visualizar pets postados
+                                </Button>
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </div>
 

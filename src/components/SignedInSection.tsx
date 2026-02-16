@@ -1,13 +1,16 @@
-"use client";
 import Link from "next/link";
 import pawprint from "../../public/assets/paw-print.png";
 import { Button } from "./ui/button";
 import { PawPrint } from "lucide-react";
 import Image from "next/image";
-import { useUser } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
+import { checkUser } from "@/lib/actions/user";
 
-export default function SignedInSection() {
-    const { user } = useUser();
+export default async function SignedInSection() {
+    const { userId: clerkId } = await auth();
+    // Verificar se usuário tem um perfil criado
+    const existingUser = await checkUser(clerkId || "");
+
     return (
         <section className="relative flex items-center justify-center min-h-screen ">
             <Image
@@ -26,22 +29,39 @@ export default function SignedInSection() {
                         <PawPrint className="w-14 h-14" />
                     </div>
                     <h2 className="text-xl font-semibold md:text-3xl">
-                        Bem vindo(a) ao FindPet, {user?.fullName}
+                        Bem vindo(a) ao FindPet
                     </h2>
-
-                    <h2 className="font-medium md:text-2xl">
-                        Visualize os pets postados recentemente ou faça um novo
-                        post!
-                    </h2>
-
-                    <Link href="/pets">
-                        <Button
-                            size={"lg"}
-                            className="bg-[#3F51B5] font-semibold hover:bg-[#5969C5]/90 cursor-pointer"
-                        >
-                            Visualizar pets!
-                        </Button>
-                    </Link>
+                    {/* Se o usuário não tiver um perfil */}
+                    {existingUser.length === 0 ? (
+                        <div className="flex flex-col items-center gap-2">
+                            <h2 className="font-medium md:text-2xl">
+                                Parece que você não tem um perfil criado.
+                            </h2>
+                            <Link href="/user/new">
+                                <Button
+                                    size={"lg"}
+                                    className="bg-[#3F51B5] font-semibold hover:bg-[#5969C5]/90 cursor-pointer"
+                                >
+                                    Crie seu perfil aqui
+                                </Button>
+                            </Link>
+                        </div>
+                    ) : (
+                        <div className="flex flex-col items-center gap-2">
+                            <h2 className="font-medium md:text-2xl">
+                                Visualize os pets postados recentemente ou faça
+                                um novo post!
+                            </h2>
+                            <Link href="/pets">
+                                <Button
+                                    size={"lg"}
+                                    className="bg-[#3F51B5] font-semibold hover:bg-[#5969C5]/90 cursor-pointer"
+                                >
+                                    Visualizar pets!
+                                </Button>
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </div>
         </section>
