@@ -47,10 +47,13 @@ export async function insertUser(prevData: any, formData: FormData) {
         clerkId,
     });
     if (!userData.success) {
-        const pretty = z.prettifyError(userData!.error).split("→")[0].trim();
+        const prettyMessage = z
+            .prettifyError(userData!.error)
+            .split("→")[0]
+            .trim();
         return {
             success: false,
-            message: pretty,
+            message: prettyMessage,
         };
     }
 
@@ -63,10 +66,9 @@ export async function insertUser(prevData: any, formData: FormData) {
             message: "Perfil criado com sucesso!",
         };
     } catch (error) {
-        console.error("Erro ao inserir perfil:", error);
         return {
             success: false,
-            message: "Erro ao inserir perfil",
+            message: `Erro ao inserir perfil: ${error}`,
         };
     }
 }

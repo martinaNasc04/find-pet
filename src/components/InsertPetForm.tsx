@@ -1,11 +1,35 @@
-import React from "react";
+"use client";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
+import { useRouter } from "next/navigation";
+import { useActionState, useEffect } from "react";
+import { insertPet } from "@/lib/actions/pet";
+import Link from "next/link";
+
+const initialState = {
+    success: false,
+    message: "",
+};
 
 export default function InsertPetForm() {
+    const router = useRouter();
+    const [state, formAction, isPending] = useActionState(
+        insertPet,
+        initialState,
+    );
+
+    useEffect(() => {
+        if (state.success) {
+            const timeOut = setTimeout(() => {
+                router.push("/pets");
+            }, 3000);
+            return () => clearTimeout(timeOut);
+        }
+    }, [state.success, router]);
+
     return (
         <div className="min-h-screen p-8 mt-10 bg-gray-50">
             <div className="max-w-6xl mx-auto mb-2 space-y-4">
@@ -16,8 +40,8 @@ export default function InsertPetForm() {
                             <CardTitle>Coloque as informações do pet</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <form>
-                                <div className="grid grid-cols-2 gap-6">
+                            <form action={formAction}>
+                                <div className="grid grid-cols-2 items-center gap-6">
                                     <div className="grid gap-2 ">
                                         <Label
                                             htmlFor="name"
@@ -30,7 +54,6 @@ export default function InsertPetForm() {
                                             name="name"
                                             type="text"
                                             placeholder="Insira o nome do pet"
-                                            required
                                             className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500"
                                         />
                                     </div>
@@ -45,7 +68,7 @@ export default function InsertPetForm() {
                                             id="breed"
                                             name="breed"
                                             type="text"
-                                            placeholder="Insira a raça do pet"
+                                            placeholder="Husky, vira-lata, persa..."
                                             required
                                             className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500"
                                         />
@@ -77,7 +100,7 @@ export default function InsertPetForm() {
                                             id="typePet"
                                             name="typePet"
                                             type="text"
-                                            placeholder="Insira o tipo de pet: gato ou cachorro"
+                                            placeholder="Gato ou cachorro..."
                                             required
                                             className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500"
                                         />
@@ -109,8 +132,8 @@ export default function InsertPetForm() {
                                             id="age"
                                             name="age"
                                             type="number"
-                                            placeholder="Insira a idade do pet"
-                                            required
+                                            min="0"
+                                            placeholder="Insira a idade se souber"
                                             className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500"
                                         />
                                     </div>
@@ -125,7 +148,7 @@ export default function InsertPetForm() {
                                             id="location"
                                             name="location"
                                             type="text"
-                                            placeholder="Insira o local"
+                                            placeholder="Ex: SP, Campinas"
                                             required
                                             className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500"
                                         />
@@ -137,17 +160,26 @@ export default function InsertPetForm() {
                                         >
                                             Status:
                                         </Label>
-                                        <Input
+
+                                        <select
                                             id="status"
                                             name="status"
-                                            type="text"
-                                            placeholder="Insira o status do pet"
                                             required
                                             className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500"
-                                        />
+                                        >
+                                            <option value="encontrado">
+                                                Encontrado
+                                            </option>
+                                            <option value="adocao">
+                                                Adoção
+                                            </option>
+                                            <option value="perdido">
+                                                Perdido
+                                            </option>
+                                        </select>
                                     </div>
                                 </div>
-                                <div className="grid gap-2 mt-6">
+                                <div className="grid gap-2 mt-6 items-center">
                                     <Label
                                         htmlFor="description"
                                         className="block text-sm font-medium text-gray-700 md:text-base"
@@ -157,22 +189,42 @@ export default function InsertPetForm() {
                                     <Textarea
                                         id="description"
                                         name="description"
-                                        required
                                         rows={4}
                                         placeholder="Descreva o pet..."
                                         className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500"
                                     />
                                 </div>
+                                {state.message && (
+                                    <div
+                                        className={`${state.success ? "bg-green-300" : "bg-red-300"} p-2 mt-6 rounded-lg flex items-center justify-center`}
+                                    >
+                                        <p
+                                            className={
+                                                state.success
+                                                    ? "text-green-700"
+                                                    : "text-red-700"
+                                            }
+                                        >
+                                            {state.message}
+                                        </p>
+                                    </div>
+                                )}
+                                <div className="flex flex-col items-center gap-4 px-4 mt-6 border-t-2 border-gray-200">
+                                    <Button
+                                        type="submit"
+                                        className="w-lg cursor-pointer"
+                                    >
+                                        {isPending ? "Salvando..." : "Salvar"}
+                                    </Button>
+                                    <Link
+                                        href="/pets"
+                                        className="w-lg cursor-pointer outline flex items-center justify-center px-3 py-2 rounded-lg"
+                                    >
+                                        Cancelar
+                                    </Link>
+                                </div>
                             </form>
                         </CardContent>
-                        <div className="flex flex-col items-center gap-4 px-4 mt-6 ">
-                            <Button type="submit" className="w-lg">
-                                Salvar
-                            </Button>
-                            <Button variant="outline" className="w-lg">
-                                Cancelar
-                            </Button>
-                        </div>
                     </Card>
                 </div>
             </div>

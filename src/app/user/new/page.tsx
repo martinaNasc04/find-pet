@@ -6,13 +6,13 @@ import { insertUser } from "@/lib/actions/user";
 import { useUser } from "@clerk/nextjs";
 import { Label } from "@radix-ui/react-label";
 import { User } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 
 const initialState = {
     success: false,
     message: "",
-    issues: [],
 };
 export default function CreateProfilePage() {
     const { user } = useUser();
@@ -28,7 +28,7 @@ export default function CreateProfilePage() {
     }, [state.success, router]);
 
     const fullName = user?.fullName as string;
-    const email = user?.primaryEmailAddress?.emailAddress;
+    const email = user?.primaryEmailAddress?.emailAddress as string;
     const imageUrl = user?.imageUrl as string;
     return (
         <div className="max-w-6xl mx-auto mb-2 space-y-4">
@@ -137,12 +137,12 @@ export default function CreateProfilePage() {
                                 >
                                     {isPending ? "Aguarde..." : "Criar perfil"}
                                 </Button>
-                                <Button
-                                    variant="outline"
-                                    className="w-lg cursor-pointer"
+                                <Link
+                                    href="/"
+                                    className="w-lg cursor-pointer outline flex items-center justify-center px-3 py-2 rounded-lg"
                                 >
                                     Cancelar
-                                </Button>
+                                </Link>
                             </div>
                         </form>
                     </CardContent>
