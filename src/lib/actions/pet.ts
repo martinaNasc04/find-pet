@@ -69,8 +69,8 @@ export const getPetById = async (id: string) => {
 };
 
 export const getUserPets = async () => {
-    const userId = await getUserId();
     try {
+        const userId = await getUserId();
         const pets = await db
             .select()
             .from(petsTable)
@@ -83,7 +83,15 @@ export const getUserPets = async () => {
 };
 
 export const insertPet = async (prevData: any, formData: FormData) => {
-    const userId = await getUserId();
+    let userId;
+    try {
+        userId = await getUserId();
+    } catch {
+        return {
+            success: false,
+            message: "User not found",
+        };
+    }
 
     const name = formData.get("name") || "Não informado";
     const breed = formData.get("breed") || "Raça não informada";
