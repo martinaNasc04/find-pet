@@ -74,7 +74,8 @@ export const getUserPets = async () => {
         const pets = await db
             .select()
             .from(petsTable)
-            .where(eq(petsTable.userId, userId));
+            .where(eq(petsTable.userId, userId))
+            .limit(1);
         return pets;
     } catch (error) {
         console.error("Erro ao buscar pets:", error);
@@ -86,22 +87,22 @@ export const insertPet = async (prevData: any, formData: FormData) => {
     let userId;
     try {
         userId = await getUserId();
-    } catch {
+    } catch (error) {
         return {
             success: false,
-            message: "User not found",
+            message: `User not found: ${error}`,
         };
     }
 
-    const name = formData.get("name") || "Não informado";
-    const breed = formData.get("breed") || "Raça não informada";
+    const name = formData.get("name") || "";
+    const breed = formData.get("breed") || "";
     const color = formData.get("color") as string;
     const typePet = formData.get("typePet") as string;
     const imageUrl = formData.get("imageUrl") as string;
     const age = formData.get("age") || 0;
     const location = formData.get("location") as string;
     const status = formData.get("status") as string;
-    const description = formData.get("description") || "Sem descrição";
+    const description = formData.get("description") || "";
 
     // Validação
     const petData = PetSchema.safeParse({
@@ -138,6 +139,73 @@ export const insertPet = async (prevData: any, formData: FormData) => {
         return {
             success: false,
             message: `Erro ao inserir pet: ${error}`,
+        };
+    }
+};
+
+export const updatePet = async (prevData: any, formData: FormData) => {
+    let userId;
+    try {
+        userId = await getUserId();
+    } catch (error) {
+        return {
+            success: false,
+            message: `User not found: ${error}`,
+        };
+    }
+    const petId = formData.get("id");
+    const name = formData.get("name") || "";
+    const breed = formData.get("breed") || "";
+    const color = formData.get("color") as string;
+    const typePet = formData.get("typePet") as string;
+    const imageUrl = formData.get("imageUrl") as string;
+    const age = formData.get("age") || 0;
+    const location = formData.get("location") as string;
+    const status = formData.get("status") as string;
+    const description = formData.get("description") || "";
+
+    const petData = PetSchema.safeParse({
+        name,
+        breed,
+        color,
+        typePet,
+        imageUrl,
+        age,
+        location,
+        status,
+        description,
+        userId,
+    });
+
+    if (!petData.success) {
+        const prettyMessage = z
+            .prettifyError(petData!.error)
+            .split("→")[0]
+            .trim();
+        return {
+            success: false,
+            message: prettyMessage,
+        };
+    }
+
+    try {
+        await db
+            .update(petsTable)
+            .set(petData.data)
+            .where(
+                and(
+                    eq(petsTable.id, Number(petId)),
+                    eq(petsTable.userId, userId),
+                ),
+            );
+        return {
+            success: true,
+            message: "Pet editado com sucesso",
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: `Erro ao editar pet: ${error}`,
         };
     }
 };

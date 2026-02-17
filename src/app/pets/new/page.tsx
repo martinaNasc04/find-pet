@@ -1,5 +1,5 @@
 "use client";
-import InsertPetForm from "@/components/InsertPetForm";
+import PetForm from "@/components/PetForm";
 import { useUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
@@ -23,5 +23,5 @@ export default function NewPetPage() {
         redirect("/sign-in");
     }
 
-    return <InsertPetForm />;
+    return <PetForm typeForm="insert" />;
 }
