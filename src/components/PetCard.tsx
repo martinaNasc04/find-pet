@@ -4,7 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
 
-export default function PetCard({ pet }: { pet: PetsDatabase }) {
+interface PetCardProps {
+    pet: PetsDatabase;
+    session: boolean;
+}
+export default function PetCard({ pet, session }: PetCardProps) {
     const { id, name, age, location, imageUrl, status, createdAt } = pet;
 
     // Define a configuração de cores e rótulos para cada status
@@ -72,6 +76,21 @@ export default function PetCard({ pet }: { pet: PetsDatabase }) {
                             {new Date(createdAt).toLocaleDateString("pt-BR")}
                         </p>
                     </div>
+                    {session && (
+                        <div className="flex justify-between mt-4">
+                            <form>
+                                <input type="hidden" name="id" value={pet.id} />
+                                <Button className="bg-red-500 text-white px-4 py-2 cursor-pointer">
+                                    Deletar
+                                </Button>
+                            </form>
+                            <Link href={`/pets/edit/${pet.id}`}>
+                                <Button className="bg-blue-500 text-white px-4 py-2 cursor-pointer">
+                                    Editar
+                                </Button>
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </CardContent>
         </Card>

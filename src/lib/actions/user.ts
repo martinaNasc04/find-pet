@@ -12,6 +12,25 @@ export async function getAllUsers() {
     return result[0].count;
 }
 
+export async function getUserId() {
+    const { userId: clerkId } = await auth();
+
+    if (!clerkId) redirect("/login");
+
+    // Buscando o userId do usuário com base no clerkId
+    const user = await db
+        .select()
+        .from(usersTable)
+        .where(eq(usersTable.clerkId, clerkId as string));
+
+    if (user.length === 0) {
+        throw new Error("User not found");
+    }
+    const id = user[0].userId;
+
+    return id;
+}
+
 export async function checkUser(clerkId: string) {
     if (!clerkId) redirect("login");
     return db

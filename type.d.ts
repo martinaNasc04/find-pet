@@ -1,7 +1,7 @@
 import { SelectPet } from "@/db/schema/petSchema";
 import { PgEnum } from "drizzle-orm/pg-core";
 
-export type PetsDatabase = SelectPet;
+export type PetsDatabase = Omit<SelectPet, "userId">;
 export type Pets = {
     id: number;
     name: string;

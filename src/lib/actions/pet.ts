@@ -3,11 +3,9 @@ import { db } from "@/db";
 import { petsTable } from "@/db/schema/petSchema";
 import { PetFilters } from "../../../type";
 import { and, desc, eq, ilike, or } from "drizzle-orm";
-import { auth } from "@clerk/nextjs/server";
-import { usersTable } from "@/db/schema/userSchema";
-import { redirect } from "next/navigation";
 import { PetSchema } from "../validation";
 import z from "zod";
+import { getUserId } from "./user";
 
 export const getPetsWithFilters = async (filters: PetFilters) => {
     if (!filters.status) {
@@ -70,23 +68,22 @@ export const getPetById = async (id: string) => {
     return pet;
 };
 
-export const insertPet = async (prevData: any, formData: FormData) => {
-    const { userId: clerkId } = await auth();
-
-    if (!clerkId) redirect("/login");
-
-    // Buscando o userId do usuário com base no clerkId
-    const user = await db
-        .select()
-        .from(usersTable)
-        .where(eq(usersTable.clerkId, clerkId as string));
-
-    if (user.length === 0) {
-        throw new Error("User not found");
+export const getUserPets = async () => {
+    const userId = await getUserId();
+    try {
+        const pets = await db
+            .select()
+            .from(petsTable)
+            .where(eq(petsTable.userId, userId));
+        return pets;
+    } catch (error) {
+        console.error("Erro ao buscar pets:", error);
+        return [];
     }
-    const userId = user[0].userId;
+};
 
-    console.log(userId);
+export const insertPet = async (prevData: any, formData: FormData) => {
+    const userId = await getUserId();
 
     const name = formData.get("name") || "Não informado";
     const breed = formData.get("breed") || "Raça não informada";
@@ -136,3 +133,5 @@ export const insertPet = async (prevData: any, formData: FormData) => {
         };
     }
 };
+
+// export const deletePet = async (id: number) => {};

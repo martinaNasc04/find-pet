@@ -96,7 +96,7 @@ export default function PetPage() {
                                     Anunciar um pet
                                 </Button>
                             </Link>
-                            <Link href="/pets/view">
+                            <Link href="/pets/view-pets">
                                 <Button className="px-3 py-2 font-semibold text-white transition-all border-2 rounded-lg cursor-pointer mb:px-6 bg-violet-500 hover:bg-white hover:text-violet-500 border-violet-300">
                                     Visualizar pets postados
                                 </Button>
@@ -210,7 +210,11 @@ export default function PetPage() {
                     ) : (
                         <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
                             {pets.map((pet) => (
-                                <PetCard pet={pet} key={pet.id} />
+                                <PetCard
+                                    pet={pet}
+                                    key={pet.id}
+                                    session={false}
+                                />
                             ))}
                         </div>
                     )}
