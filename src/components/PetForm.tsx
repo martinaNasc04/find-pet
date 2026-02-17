@@ -6,25 +6,29 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
-import { insertPet } from "@/lib/actions/pet";
+import { updatePet, insertPet } from "@/lib/actions/pet";
 import Link from "next/link";
+import { PetsDatabase } from "../../type";
 
 const initialState = {
     success: false,
     message: "",
 };
 
-export default function InsertPetForm() {
+interface PetFormProps {
+    typeForm: string;
+    pet?: PetsDatabase[];
+}
+
+export default function PetForm({ typeForm, pet }: PetFormProps) {
+    const action = typeForm === "insert" ? insertPet : updatePet;
     const router = useRouter();
-    const [state, formAction, isPending] = useActionState(
-        insertPet,
-        initialState,
-    );
+    const [state, formAction, isPending] = useActionState(action, initialState);
 
     useEffect(() => {
         if (state.success) {
             const timeOut = setTimeout(() => {
-                router.push("/pets");
+                router.push("/pets/view-pets");
             }, 3000);
             return () => clearTimeout(timeOut);
         }
@@ -33,15 +37,30 @@ export default function InsertPetForm() {
     return (
         <div className="min-h-screen p-8 mt-10 bg-gray-50">
             <div className="max-w-6xl mx-auto mb-2 space-y-4">
-                <h1 className="text-2xl font-bold">Poste o pet aqui</h1>
+                <h1 className="text-2xl font-bold">
+                    {typeForm === "insert"
+                        ? " Poste o seu pet"
+                        : " Edite o seu pet"}
+                </h1>
                 <div className="flex flex-col items-center justify-center w-full">
                     <Card className="w-full max-w-xl">
                         <CardHeader className="border-b-2 border-indigo-100">
-                            <CardTitle>Coloque as informações do pet</CardTitle>
+                            <CardTitle>
+                                {typeForm === "insert" ? "Coloque" : "Atualize"}{" "}
+                                as informações do pet
+                            </CardTitle>
                         </CardHeader>
                         <CardContent>
                             <form action={formAction}>
                                 <div className="grid grid-cols-2 items-center gap-6">
+                                    {typeForm === "edit" && (
+                                        <input
+                                            type="hidden"
+                                            name="id"
+                                            value={pet[0].id as number}
+                                        />
+                                    )}
+
                                     <div className="grid gap-2 ">
                                         <Label
                                             htmlFor="name"
@@ -53,6 +72,11 @@ export default function InsertPetForm() {
                                             id="name"
                                             name="name"
                                             type="text"
+                                            defaultValue={
+                                                typeForm === "edit"
+                                                    ? (pet[0].name as string)
+                                                    : ""
+                                            }
                                             placeholder="Insira o nome do pet"
                                             className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500"
                                         />
@@ -68,6 +92,11 @@ export default function InsertPetForm() {
                                             id="breed"
                                             name="breed"
                                             type="text"
+                                            defaultValue={
+                                                typeForm === "edit"
+                                                    ? (pet[0].breed as string)
+                                                    : ""
+                                            }
                                             placeholder="Husky, vira-lata, persa..."
                                             required
                                             className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500"
@@ -84,6 +113,11 @@ export default function InsertPetForm() {
                                             id="color"
                                             name="color"
                                             type="text"
+                                            defaultValue={
+                                                typeForm === "edit"
+                                                    ? (pet[0].color as string)
+                                                    : ""
+                                            }
                                             placeholder="Insira a cor do pet"
                                             required
                                             className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500"
@@ -100,6 +134,11 @@ export default function InsertPetForm() {
                                             id="typePet"
                                             name="typePet"
                                             type="text"
+                                            defaultValue={
+                                                typeForm === "edit"
+                                                    ? (pet[0].typePet as string)
+                                                    : ""
+                                            }
                                             placeholder="Gato ou cachorro..."
                                             required
                                             className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500"
@@ -116,6 +155,12 @@ export default function InsertPetForm() {
                                             id="imageUrl"
                                             name="imageUrl"
                                             type="text"
+                                            defaultValue={
+                                                typeForm === "edit"
+                                                    ? (pet[0]
+                                                          .imageUrl as string)
+                                                    : ""
+                                            }
                                             placeholder="Insira o link da imagem do pet (unsplash por enquanto)"
                                             required
                                             className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500"
@@ -133,6 +178,11 @@ export default function InsertPetForm() {
                                             name="age"
                                             type="number"
                                             min="0"
+                                            defaultValue={
+                                                typeForm === "edit"
+                                                    ? (pet[0].age as number)
+                                                    : 0
+                                            }
                                             placeholder="Insira a idade se souber"
                                             className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500"
                                         />
@@ -148,6 +198,11 @@ export default function InsertPetForm() {
                                             id="location"
                                             name="location"
                                             type="text"
+                                            defaultValue={
+                                                typeForm === "edit"
+                                                    ? pet[0].location
+                                                    : ""
+                                            }
                                             placeholder="Ex: SP, Campinas"
                                             required
                                             className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500"
@@ -164,6 +219,11 @@ export default function InsertPetForm() {
                                         <select
                                             id="status"
                                             name="status"
+                                            defaultValue={
+                                                typeForm === "edit"
+                                                    ? pet[0].status
+                                                    : "encontrado"
+                                            }
                                             required
                                             className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500"
                                         >
@@ -189,6 +249,11 @@ export default function InsertPetForm() {
                                     <Textarea
                                         id="description"
                                         name="description"
+                                        defaultValue={
+                                            typeForm === "edit"
+                                                ? (pet[0].description as string)
+                                                : ""
+                                        }
                                         rows={4}
                                         placeholder="Descreva o pet..."
                                         className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500"
