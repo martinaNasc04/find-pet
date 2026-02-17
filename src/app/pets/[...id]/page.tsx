@@ -5,6 +5,7 @@ import { eq } from "drizzle-orm";
 import {
     Calendar,
     MapPin,
+    MoveLeft,
     PaintbrushIcon,
     PawPrint,
     PenTool,
@@ -75,9 +76,12 @@ export default async function ViewPetPage({
                 className={` bg-${currentStatus.bgLight} rounded-lg px-4 py-2 mb-4`}
             >
                 {" "}
-                <p className={`text-${currentStatus.bg} text-sm md:text-xl`}>
-                    Voltar
-                </p>{" "}
+                <div
+                    className={`flex items-center gap-2 text-${currentStatus.bg}`}
+                >
+                    <MoveLeft className="w-3.5 h-3.5 md:w-5 md:h-5" />
+                    <p className="text-sm md:text-xl">Voltar</p>{" "}
+                </div>
             </Link>
             <div className="max-w-6xl mx-auto mb-2">
                 <div className="flex flex-col items-center justify-between w-full gap-4 px-8 md:flex-row md:gap-14">

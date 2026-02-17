@@ -1,11 +1,34 @@
+"use client";
 import { PetsDatabase } from "../../type";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
+import { useActionState, useEffect } from "react";
+import { deletePet } from "@/lib/actions/pet";
+import { useRouter } from "next/navigation";
 
-export default function PetCard({ pet }: { pet: PetsDatabase }) {
+interface PetCardProps {
+    pet: PetsDatabase;
+    session: boolean;
+}
+const initialState = {
+    success: false,
+    message: "",
+};
+export default function PetCard({ pet, session }: PetCardProps) {
     const { id, name, age, location, imageUrl, status, createdAt } = pet;
+    const [state, formAction, isPending] = useActionState(
+        deletePet,
+        initialState,
+    );
+    const router = useRouter();
+
+    useEffect(() => {
+        if (state.success) {
+            router.push("/pets/view-pets");
+        }
+    }, [state.success, router]);
 
     // Define a configuração de cores e rótulos para cada status
     const statusConfig: Record<string, { bg: string; label: string }> = {
@@ -72,6 +95,42 @@ export default function PetCard({ pet }: { pet: PetsDatabase }) {
                             {new Date(createdAt).toLocaleDateString("pt-BR")}
                         </p>
                     </div>
+                    {session && (
+                        <div className="flex flex-col mt-4">
+                            <div className="flex justify-between">
+                                <form action={formAction}>
+                                    <input
+                                        type="hidden"
+                                        name="id"
+                                        value={pet.id}
+                                    />
+                                    <Button className="bg-red-500 text-white px-4 py-2 cursor-pointer">
+                                        {isPending ? "Deletando..." : "Deletar"}
+                                    </Button>
+                                </form>
+                                <Link href={`/pets/edit/${pet.id}`}>
+                                    <Button className="bg-blue-500 text-white px-4 py-2 cursor-pointer">
+                                        Editar
+                                    </Button>
+                                </Link>
+                            </div>
+                            {state.message && (
+                                <div
+                                    className={`${state.success ? "bg-green-300" : "bg-red-300"} p-2 mt-6 rounded-lg flex items-center justify-center`}
+                                >
+                                    <p
+                                        className={
+                                            state.success
+                                                ? "text-green-700"
+                                                : "text-red-700"
+                                        }
+                                    >
+                                        {state.message}
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </div>
             </CardContent>
         </Card>
