@@ -33,7 +33,7 @@ export default async function ViewPetsPage() {
                     </h1>
                     {/* Verificar se o usuário tem pets */}
                     {pets.length > 0 && (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-black">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 text-black">
                             {pets.map((pet) => (
                                 <PetCard
                                     pet={pet}
@@ -45,7 +45,7 @@ export default async function ViewPetsPage() {
                     )}
                     {pets.length === 0 && (
                         <p className="text-2xl text-center col-span-full">
-                            Vocês ainda nao possui pets cadastrados
+                            Você não tem nenhum pet cadastrado
                         </p>
                     )}
                 </div>

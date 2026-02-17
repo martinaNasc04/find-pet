@@ -142,4 +142,19 @@ export const insertPet = async (prevData: any, formData: FormData) => {
     }
 };
 
-// export const deletePet = async (id: number) => {};
+export const deletePet = async (prevData: any, formData: FormData) => {
+    const id = formData.get("id");
+
+    try {
+        await db.delete(petsTable).where(eq(petsTable.id, Number(id)));
+        return {
+            success: true,
+            message: "Pet deletado com sucesso",
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: `Erro ao deletar pet: ${error}`,
+        };
+    }
+};
