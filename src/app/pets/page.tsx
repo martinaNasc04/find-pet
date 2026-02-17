@@ -88,21 +88,6 @@ export default function PetPage() {
                                 : tab.charAt(0).toUpperCase() + tab.slice(1)}
                         </Button>
                     ))}
-                    {/* Adicionar botões para adicionar pets and visualizar o pet postado */}
-                    {isSignedIn && (
-                        <div className="flex gap-2">
-                            <Link href="/pets/new">
-                                <Button className="px-3 py-2 font-semibold text-white transition-all bg-orange-500 border-2 border-orange-300 rounded-lg cursor-pointer md:px-6 hover:bg-white hover:text-orange-500">
-                                    Anunciar um pet
-                                </Button>
-                            </Link>
-                            <Link href="/pets/view-pets">
-                                <Button className="px-3 py-2 font-semibold text-white transition-all border-2 rounded-lg cursor-pointer mb:px-6 bg-violet-500 hover:bg-white hover:text-violet-500 border-violet-300">
-                                    Visualizar pets postados
-                                </Button>
-                            </Link>
-                        </div>
-                    )}
                 </div>
             </div>
 

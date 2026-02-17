@@ -21,7 +21,29 @@ const Navbar = () => {
             {!isLoaded ? (
                 <div />
             ) : isSignedIn ? (
-                <UserButton />
+                <div className="flex gap-6">
+                    <Link href="/user">
+                        <Button className="px-3 py-2 font-semibold text-white transition-all bg-cyan-500 border-2 border-cyan-300 rounded-lg cursor-pointer md:px-6 hover:bg-white hover:text-cyan-500">
+                            Seu perfil
+                        </Button>
+                    </Link>
+                    <Link href="/pets/new">
+                        <Button className="px-3 py-2 font-semibold text-white transition-all bg-pink-500 border-2 border-pink-300 rounded-lg cursor-pointer md:px-6 hover:bg-white hover:text-pink-500">
+                            Pets
+                        </Button>
+                    </Link>
+                    <Link href="/pets/new">
+                        <Button className="px-3 py-2 font-semibold text-white transition-all bg-orange-500 border-2 border-orange-300 rounded-lg cursor-pointer md:px-6 hover:bg-white hover:text-orange-500">
+                            Anunciar um pet
+                        </Button>
+                    </Link>
+                    <Link href="/pets/view-pets">
+                        <Button className="px-3 py-2 font-semibold text-white transition-all border-2 rounded-lg cursor-pointer mb:px-6 bg-violet-500 hover:bg-white hover:text-violet-500 border-violet-300">
+                            Visualizar pets postados
+                        </Button>
+                    </Link>
+                    <UserButton />
+                </div>
             ) : (
                 <Link href="/login">
                     <Button>Entrar</Button>
