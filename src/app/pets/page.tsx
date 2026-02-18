@@ -9,6 +9,12 @@ import PetCard from "@/components/PetCard";
 import SpinnerSizesDemo from "@/components/customized/spinner/spinner-05";
 import { useAuth } from "@clerk/nextjs";
 import Link from "next/link";
+import {
+    getBreeds,
+    getColors,
+    getLocations,
+    getPetTypes,
+} from "@/lib/actions/pet";
 
 export default function PetPage() {
     const [activeTab, setActiveTab] = useState("perdido");
@@ -22,6 +28,10 @@ export default function PetPage() {
     const [selectedColor, setSelectedColor] = useState("");
     const [selectedTypePet, setSelectedTypePet] = useState("");
     const [selectedLocation, setSelectedLocation] = useState("");
+    const [breeds, setBreeds] = useState<string[]>([]);
+    const [colors, setColors] = useState<string[]>([]);
+    const [typePets, setTypePets] = useState<string[]>([]);
+    const [locations, setLocations] = useState<string[]>([]);
 
     // Buscar pets
     const fetchPets = useCallback(async () => {
@@ -64,6 +74,66 @@ export default function PetPage() {
         }, 300);
         return () => clearTimeout(timer);
     }, [fetchPets]);
+
+    useEffect(() => {
+        const fetchBreeds = async () => {
+            const data = await getBreeds();
+            setBreeds(
+                data.map((item) => item.breed).filter(Boolean) as string[],
+            );
+        };
+        fetchBreeds();
+    }, []);
+
+    useEffect(() => {
+        const fetchColors = async () => {
+            const data = await getColors();
+            setColors(
+                data.map((item) => item.color).filter(Boolean) as string[],
+            );
+        };
+        fetchColors();
+    }, []);
+
+    useEffect(() => {
+        const fetchTypePets = async () => {
+            const data = await getPetTypes();
+            setTypePets(
+                data.map((item) => item.typePet).filter(Boolean) as string[],
+            );
+        };
+        fetchTypePets();
+    }, []);
+
+    useEffect(() => {
+        const fetchLocations = async () => {
+            const data = await getLocations();
+            setLocations(
+                data.map((item) => item.location).filter(Boolean) as string[],
+            );
+        };
+        fetchLocations();
+    }, []);
+
+    console.log("Verificando filtro raça:", breeds);
+    console.log("Verificando filtro cor:", colors);
+    console.log("Verificando filtro tipo de pet:", typePets);
+    console.log("Verificando filtro localidade:", locations);
+
+    const clearFilters = () => {
+        setSelectedBreed("");
+        setSelectedColor("");
+        setSelectedTypePet("");
+        setSelectedLocation("");
+        setSearchQuery("");
+    };
+
+    const activeFilterCount = [
+        selectedBreed,
+        selectedColor,
+        selectedTypePet,
+        selectedLocation,
+    ].filter(Boolean).length;
 
     return (
         <div className="min-h-screen p-8 mt-10 bg-gray-50">

@@ -2,7 +2,7 @@
 import { db } from "@/db";
 import { petsTable } from "@/db/schema/petSchema";
 import { PetFilters } from "../../../type";
-import { and, desc, eq, ilike, or } from "drizzle-orm";
+import { and, desc, eq, ilike, or, sql } from "drizzle-orm";
 import { PetSchema } from "../validation";
 import z from "zod";
 import { getUserId } from "./user";
@@ -81,6 +81,38 @@ export const getUserPets = async () => {
         console.error("Erro ao buscar pets:", error);
         return [];
     }
+};
+
+export const getBreeds = async () => {
+    return await db
+        .selectDistinct({ breed: petsTable.breed })
+        .from(petsTable)
+        .where(sql`${petsTable.breed} IS NOT NULL`)
+        .orderBy(petsTable.breed);
+};
+
+export const getColors = async () => {
+    return await db
+        .selectDistinct({ color: petsTable.color })
+        .from(petsTable)
+        .where(sql`${petsTable.color} IS NOT NULL`)
+        .orderBy(petsTable.color);
+};
+
+export const getPetTypes = async () => {
+    return await db
+        .selectDistinct({ typePet: petsTable.typePet })
+        .from(petsTable)
+        .where(sql`${petsTable.typePet} IS NOT NULL`)
+        .orderBy(petsTable.typePet);
+};
+
+export const getLocations = async () => {
+    return await db
+        .selectDistinct({ location: petsTable.location })
+        .from(petsTable)
+        .where(sql`${petsTable.location} IS NOT NULL`)
+        .orderBy(petsTable.location);
 };
 
 export const insertPet = async (prevData: any, formData: FormData) => {
