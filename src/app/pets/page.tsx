@@ -76,49 +76,41 @@ export default function PetPage() {
     }, [fetchPets]);
 
     useEffect(() => {
-        const fetchBreeds = async () => {
-            const data = await getBreeds();
-            setBreeds(
-                data.map((item) => item.breed).filter(Boolean) as string[],
-            );
+        const fetchFilterOptions = async () => {
+            try {
+                const [breedsData, colorsData, typePetsData, locationsData] =
+                    await Promise.all([
+                        getBreeds(),
+                        getColors(),
+                        getPetTypes(),
+                        getLocations(),
+                    ]);
+                setBreeds(
+                    breedsData
+                        .map((item) => item.breed)
+                        .filter(Boolean) as string[],
+                );
+                setColors(
+                    colorsData
+                        .map((item) => item.color)
+                        .filter(Boolean) as string[],
+                );
+                setTypePets(
+                    typePetsData
+                        .map((item) => item.typePet)
+                        .filter(Boolean) as string[],
+                );
+                setLocations(
+                    locationsData
+                        .map((item) => item.location)
+                        .filter(Boolean) as string[],
+                );
+            } catch (error) {
+                console.error("Error fetching filter options:", error);
+            }
         };
-        fetchBreeds();
+        fetchFilterOptions();
     }, []);
-
-    useEffect(() => {
-        const fetchColors = async () => {
-            const data = await getColors();
-            setColors(
-                data.map((item) => item.color).filter(Boolean) as string[],
-            );
-        };
-        fetchColors();
-    }, []);
-
-    useEffect(() => {
-        const fetchTypePets = async () => {
-            const data = await getPetTypes();
-            setTypePets(
-                data.map((item) => item.typePet).filter(Boolean) as string[],
-            );
-        };
-        fetchTypePets();
-    }, []);
-
-    useEffect(() => {
-        const fetchLocations = async () => {
-            const data = await getLocations();
-            setLocations(
-                data.map((item) => item.location).filter(Boolean) as string[],
-            );
-        };
-        fetchLocations();
-    }, []);
-
-    console.log("Verificando filtro raça:", breeds);
-    console.log("Verificando filtro cor:", colors);
-    console.log("Verificando filtro tipo de pet:", typePets);
-    console.log("Verificando filtro localidade:", locations);
 
     const clearFilters = () => {
         setSelectedBreed("");
