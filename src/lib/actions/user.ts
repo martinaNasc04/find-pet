@@ -31,6 +31,23 @@ export async function getUserId() {
     return id;
 }
 
+export async function getCurrentUserInfo() {
+    const userId = await getUserId();
+
+    const user = await db
+        .select({
+            userId: usersTable.userId,
+            fullName: usersTable.fullName,
+            email: usersTable.email,
+            imageUrl: usersTable.imageUrl,
+            createdAt: usersTable.createdAt,
+        })
+        .from(usersTable)
+        .where(eq(usersTable.userId, userId));
+
+    return user;
+}
+
 export async function checkUser(clerkId: string) {
     if (!clerkId) redirect("login");
     return db

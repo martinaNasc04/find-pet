@@ -1,9 +1,6 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@radix-ui/react-label";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 
 import PetCard from "@/components/PetCard";
 import SpinnerSizesDemo from "@/components/customized/spinner/spinner-05";
