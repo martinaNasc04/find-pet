@@ -44,6 +44,9 @@ export const FilterPets = ({
 }: FilterPetsProps) => {
     useEffect(() => {
         document.body.style.overflow = menuOpen ? "hidden" : "";
+        return () => {
+            document.body.style.overflow = "";
+        };
     }, [menuOpen]);
 
     return (

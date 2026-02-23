@@ -3,7 +3,6 @@ import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { optionBreeds, optionColors } from "@/data/petConstants";
-import { Eraser } from "lucide-react";
 
 export default function FilterToggle({
     options,
@@ -29,14 +28,14 @@ export default function FilterToggle({
             `}
         >
             <Button
-                className=" flex items-center justify-center absolute text-3xl cursor-pointer top-6 top-r-6 focus:outline-none"
+                className=" flex items-center justify-center absolute text-3xl cursor-pointer top-6 right-6 focus:outline-none"
                 aria-label="Fechar filtro"
                 onClick={() => setMenuOpen(false)}
             >
                 &times;
             </Button>
             <Button
-                className=" flex items-center justify-center absolute text-sm cursor-pointer bottom-2 top-r-6 focus:outline-none"
+                className=" flex items-center justify-center absolute text-sm cursor-pointer bottom-2 right-6 focus:outline-none"
                 aria-label="Limpar filtros"
                 onClick={() => clearFilters()}
             >
@@ -120,7 +119,6 @@ export default function FilterToggle({
                     <select
                         value={selectedTypePet}
                         onChange={(e) => setSelectedTypePet(e.target.value)}
-                        disabled={!options.typePets.length}
                         className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
                     >
                         <option value="">Tipo</option>

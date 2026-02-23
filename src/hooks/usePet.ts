@@ -41,39 +41,43 @@ export const usePet = () => {
     ].filter(Boolean).length;
 
     // Buscar pets
-    const fetchPets = useCallback(async () => {
-        setLoading(true);
-        try {
-            //Construir URL com os parâmetros de busca
-            const params = new URLSearchParams({
-                status: activeTab,
-                ...(selectedBreed && { breed: selectedBreed }),
-                ...(selectedColor && { color: selectedColor }),
-                ...(selectedTypePet && { typePet: selectedTypePet }),
-                ...(selectedLocation && { location: selectedLocation }),
-                ...(searchQuery && { search: searchQuery }),
-            });
+    const fetchPets = useCallback(
+        async (signal?: AbortSignal) => {
+            setLoading(true);
+            try {
+                //Construir URL com os parâmetros de busca
+                const params = new URLSearchParams({
+                    status: activeTab,
+                    ...(selectedBreed && { breed: selectedBreed }),
+                    ...(selectedColor && { color: selectedColor }),
+                    ...(selectedTypePet && { typePet: selectedTypePet }),
+                    ...(selectedLocation && { location: selectedLocation }),
+                    ...(searchQuery && { search: searchQuery }),
+                });
 
-            const response = await fetch(`/api/pets?${params}`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                const response = await fetch(`/api/pets?${params}`, { signal });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                setPets(data.pets);
+            } catch (error) {
+                if (error instanceof Error && error.name === "AbortError") {
+                    return;
+                }
+            } finally {
+                setLoading(false);
             }
-            const data = await response.json();
-            setPets(data.pets);
-        } catch (error) {
-            console.error("Erro ao buscar pets:", error);
-            setPets([]);
-        } finally {
-            setLoading(false);
-        }
-    }, [
-        activeTab,
-        selectedBreed,
-        selectedColor,
-        selectedTypePet,
-        selectedLocation,
-        searchQuery,
-    ]);
+        },
+        [
+            activeTab,
+            selectedBreed,
+            selectedColor,
+            selectedTypePet,
+            selectedLocation,
+            searchQuery,
+        ],
+    );
 
     useEffect(() => {
         const timer = setTimeout(() => {

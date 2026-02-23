@@ -75,12 +75,14 @@ export default function PetPage() {
                             <p className="text-gray-600">
                                 {loading ? "Carregando..." : `${pets.length}`}
                             </p>
-                            <div
+                            <Button
+                                aria-label="Abrir Filtro"
+                                variant="ghost"
                                 className="relative z-0 h-5 cursor-pointer w-7 md:hidden"
                                 onClick={() => setMenuOpen((prev) => !prev)}
                             >
                                 <FunnelIcon />
-                            </div>
+                            </Button>
                         </div>
                     </div>
                     {/* Pet cards */}
@@ -108,7 +110,6 @@ export default function PetPage() {
                             ))}
                         </div>
                     )}
-                    <input type="text" />
                 </main>
             </div>
         </div>
