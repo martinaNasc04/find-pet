@@ -1,6 +1,10 @@
 import Navbar from "@/components/Navbar";
 
-export default function PetLayout({ children }: { children: React.ReactNode }) {
+export default function UserLayout({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
     return (
         <section>
             <Navbar />
