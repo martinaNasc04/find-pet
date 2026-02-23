@@ -4,128 +4,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
 import { useCallback, useEffect, useState } from "react";
-import { PetsDatabase } from "../../../type";
+
 import PetCard from "@/components/PetCard";
 import SpinnerSizesDemo from "@/components/customized/spinner/spinner-05";
-import { useAuth } from "@clerk/nextjs";
-import Link from "next/link";
-import {
-    getBreeds,
-    getColors,
-    getLocations,
-    getPetTypes,
-} from "@/lib/actions/pet";
+import { usePet } from "@/hooks/usePet";
+import { FunnelIcon } from "lucide-react";
+
+import { FilterPets } from "@/components/FilterPets";
+import FilterToggle from "@/components/FilterToggle";
 
 export default function PetPage() {
-    const [activeTab, setActiveTab] = useState("perdido");
-    const [pets, setPets] = useState<PetsDatabase[]>([]);
-    const [loading, setLoading] = useState(false);
-    const { isSignedIn } = useAuth();
+    const { activeTab, pets, loading, filters, setActiveTab } = usePet();
 
-    //Filtros
-    const [searchQuery, setSearchQuery] = useState("");
-    const [selectedBreed, setSelectedBreed] = useState("");
-    const [selectedColor, setSelectedColor] = useState("");
-    const [selectedTypePet, setSelectedTypePet] = useState("");
-    const [selectedLocation, setSelectedLocation] = useState("");
-    const [breeds, setBreeds] = useState<string[]>([]);
-    const [colors, setColors] = useState<string[]>([]);
-    const [typePets, setTypePets] = useState<string[]>([]);
-    const [locations, setLocations] = useState<string[]>([]);
-
-    // Buscar pets
-    const fetchPets = useCallback(async () => {
-        setLoading(true);
-        try {
-            //Construir URL com os parâmetros de busca
-            const params = new URLSearchParams({
-                status: activeTab,
-                ...(selectedBreed && { breed: selectedBreed }),
-                ...(selectedColor && { color: selectedColor }),
-                ...(selectedTypePet && { typePet: selectedTypePet }),
-                ...(selectedLocation && { location: selectedLocation }),
-                ...(searchQuery && { search: searchQuery }),
-            });
-
-            const response = await fetch(`/api/pets?${params}`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
-            setPets(data.pets);
-        } catch (error) {
-            console.error("Erro ao buscar pets:", error);
-            setPets([]);
-        } finally {
-            setLoading(false);
-        }
-    }, [
-        activeTab,
-        selectedBreed,
-        selectedColor,
-        selectedTypePet,
-        selectedLocation,
-        searchQuery,
-    ]);
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            fetchPets();
-        }, 300);
-        return () => clearTimeout(timer);
-    }, [fetchPets]);
-
-    useEffect(() => {
-        const fetchFilterOptions = async () => {
-            try {
-                const [breedsData, colorsData, typePetsData, locationsData] =
-                    await Promise.all([
-                        getBreeds(),
-                        getColors(),
-                        getPetTypes(),
-                        getLocations(),
-                    ]);
-                setBreeds(
-                    breedsData
-                        .map((item) => item.breed)
-                        .filter(Boolean) as string[],
-                );
-                setColors(
-                    colorsData
-                        .map((item) => item.color)
-                        .filter(Boolean) as string[],
-                );
-                setTypePets(
-                    typePetsData
-                        .map((item) => item.typePet)
-                        .filter(Boolean) as string[],
-                );
-                setLocations(
-                    locationsData
-                        .map((item) => item.location)
-                        .filter(Boolean) as string[],
-                );
-            } catch (error) {
-                console.error("Error fetching filter options:", error);
-            }
-        };
-        fetchFilterOptions();
-    }, []);
-
-    const clearFilters = () => {
-        setSelectedBreed("");
-        setSelectedColor("");
-        setSelectedTypePet("");
-        setSelectedLocation("");
-        setSearchQuery("");
-    };
-
-    const activeFilterCount = [
-        selectedBreed,
-        selectedColor,
-        selectedTypePet,
-        selectedLocation,
-    ].filter(Boolean).length;
+    const [menuOpen, setMenuOpen] = useState(false);
 
     return (
         <div className="min-h-screen p-8 mt-10 bg-gray-50">
@@ -137,6 +28,7 @@ export default function PetPage() {
                             key={tab}
                             onClick={() => {
                                 setActiveTab(tab);
+                                filters.clearFilters();
                             }}
                             className={`px-3 mb:px-6 py-2 rounded-lg font-semibold transition-all cursor-pointer
                             ${
@@ -155,73 +47,18 @@ export default function PetPage() {
 
             <div className="flex gap-8">
                 {/* Sidebar Filtro */}
-                <aside className="w-64 p-6 bg-white rounded-lg shadow">
-                    <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-lg font-bold text-black">
-                            Filtrar
-                        </h2>
-                        <Button
-                            className="text-sm text-blue-600 cursor-pointer hover:text-blue-700"
-                            variant="outline"
-                        >
-                            Limpar
-                        </Button>
-                    </div>
-                    {/* Procurar */}
-                    <div className="mb-4">
-                        <Label className="block mb-2 text-sm font-medium text-black">
-                            Procurar
-                        </Label>
-                        <Input
-                            type="text"
-                            placeholder="Nome ou raça..."
-                            className="w-full px-3 py-2 text-gray-600 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
+                <FilterPets
+                    {...filters}
+                    menuOpen={menuOpen}
+                    setMenuOpen={setMenuOpen}
+                />
 
-                    {/* Filtro da raça */}
-                    <div className="mb-4 text-black">
-                        <Label className="block mb-2 text-sm font-medium">
-                            Selecione a raça
-                        </Label>
-                        <select className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
-                            <option value="Raças">Raças</option>
-                            <option value="Pitbull">Pitbull</option>
-                            <option value="Golden Retriever">
-                                Golden Retriever
-                            </option>
-                            <option value="Poodle">Poodle</option>
-                            <option value="Pincher">Pincher</option>
-                        </select>
-                    </div>
-                    {/* Filtro de cor */}
-                    <div className="mb-4 text-black">
-                        <Label className="block mb-2 text-sm font-medium">
-                            Selecione a cor
-                        </Label>
-                        <select className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
-                            <option value="Cores">Cores</option>
-                            <option value="Caramelo">Caramelo</option>
-                            <option value="Preto">Preto</option>
-                            <option value="Branco">Branco</option>
-                            <option value="Misturado">Misturado</option>
-                        </select>
-                    </div>
-                    {/* Filtro de localização */}
-                    <div className="mb-4 text-black">
-                        <Label className="block mb-2 text-sm font-medium">
-                            Local
-                        </Label>
-                        <select className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
-                            <option value="Local">Local</option>
-                            <option value="Campinas">Campinas</option>
-                            <option value="Ribeirão Preto">
-                                Ribeirão Preto
-                            </option>
-                            <option value="São Paulo">São Paulo</option>
-                        </select>
-                    </div>
-                </aside>
+                {/* Mobile filter */}
+                <FilterToggle
+                    {...filters}
+                    menuOpen={menuOpen}
+                    setMenuOpen={setMenuOpen}
+                />
 
                 {/* Resultados */}
                 <main className="flex-1">
@@ -238,6 +75,12 @@ export default function PetPage() {
                             <p className="text-gray-600">
                                 {loading ? "Carregando..." : `${pets.length}`}
                             </p>
+                            <div
+                                className="relative z-0 h-5 cursor-pointer w-7 md:hidden"
+                                onClick={() => setMenuOpen((prev) => !prev)}
+                            >
+                                <FunnelIcon />
+                            </div>
                         </div>
                     </div>
                     {/* Pet cards */}
@@ -255,7 +98,7 @@ export default function PetPage() {
                             </p>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                             {pets.map((pet) => (
                                 <PetCard
                                     pet={pet}
@@ -265,6 +108,7 @@ export default function PetPage() {
                             ))}
                         </div>
                     )}
+                    <input type="text" />
                 </main>
             </div>
         </div>

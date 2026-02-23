@@ -42,12 +42,12 @@ export default function PetCard({ pet, session }: PetCardProps) {
             <CardContent className="p-0">
                 {/* Image */}
                 {imageUrl ? (
-                    <div className="relative w-full aspect-square bg-gray-100 overflow-hidden rounded-lg">
+                    <div className="relative aspect-video md:aspect-square bg-gray-100 overflow-hidden">
                         <Image
                             src={imageUrl}
                             alt={`Photo of ${name}`}
                             fill
-                            className="object-cover rounded-full"
+                            className="object-cover object-center md:rounded-full"
                         />
                     </div>
                 ) : (
@@ -58,7 +58,7 @@ export default function PetCard({ pet, session }: PetCardProps) {
                     </div>
                 )}
 
-                <div className="p-4 space-y-2">
+                <div className="p-4 space-y-2 md:p-6">
                     <div className="flex justify-between items-center">
                         <h3 className="text-lg font-semibold truncate md:text-xl">
                             {name}
@@ -66,7 +66,7 @@ export default function PetCard({ pet, session }: PetCardProps) {
                         <Link href={`/pets/${id}`}>
                             <Button
                                 size="sm"
-                                className="bg-[#3F51B5] font-semibold hover:bg-[#5969C5]/90 cursor-pointer"
+                                className="bg-[#3F51B5] font-semibold hover:bg-[#5969C5]/90 text-sm cursor-pointer md:text-base"
                             >
                                 Ver detalhes
                             </Button>
@@ -109,14 +109,14 @@ export default function PetCard({ pet, session }: PetCardProps) {
                                     </Button>
                                 </form>
                                 <Link href={`/pets/edit/${pet.id}`}>
-                                    <Button className="bg-blue-500 text-white px-4 py-2 cursor-pointer">
+                                    <Button className="bg-blue-500 text-white text-sm md:text-base px-4 py-2 cursor-pointer">
                                         Editar
                                     </Button>
                                 </Link>
                             </div>
                             {state.message && (
                                 <div
-                                    className={`${state.success ? "bg-green-300" : "bg-red-300"} p-2 mt-6 rounded-lg flex items-center justify-center`}
+                                    className={`${state.success ? "bg-green-300" : "bg-red-300"} text-sm md:text-base p-2 mt-6 rounded-lg flex items-center justify-center`}
                                 >
                                     <p
                                         className={

@@ -33,6 +33,7 @@ export const getPetsWithFilters = async (filters: PetFilters) => {
             or(
                 ilike(petsTable.color, `%${filters.search}%`),
                 ilike(petsTable.breed, `%${filters.search}%`),
+                ilike(petsTable.typePet, `%${filters.search}%`),
             ),
         );
     }

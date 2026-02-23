@@ -27,7 +27,7 @@ const Navbar = () => {
                             Seu perfil
                         </Button>
                     </Link>
-                    <Link href="/pets/new">
+                    <Link href="/pets">
                         <Button className="px-3 py-2 font-semibold text-white transition-all bg-pink-500 border-2 border-pink-300 rounded-lg cursor-pointer md:px-6 hover:bg-white hover:text-pink-500">
                             Pets
                         </Button>
