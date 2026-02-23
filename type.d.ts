@@ -26,3 +26,10 @@ export type PetFilters = {
     location?: string;
     search?: string;
 };
+
+export interface FilterOptions {
+    breeds: string[];
+    colors: string[];
+    typePets: string[];
+    locations: string[];
+}
