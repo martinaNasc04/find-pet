@@ -2,11 +2,12 @@ import { Button } from "@/components/ui/button";
 import { getCurrentUserInfo } from "@/lib/actions/user";
 import { PawPrint } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 export default async function UserPage() {
     const userInfo = await getCurrentUserInfo();
-    const { fullName, email, imageUrl, createdAt } = userInfo[0];
+    const { fullName, email, imageUrl, createdAt, userId } = userInfo[0];
     return (
         <div className="min-h-screen p-8 mt-10 bg-gray-50">
             <div className="max-w-6xl mx-auto mb-2">
@@ -52,9 +53,11 @@ export default async function UserPage() {
                         </p>
 
                         <div className="flex gap-4">
-                            <Button className="px-4 py-2 text-sm text-white transition-colors bg-blue-600 cursor-pointer hover:bg-blue-500 md:text-base">
-                                Editar Conta
-                            </Button>
+                            <Link href={`/user/edit/${userId}`}>
+                                <Button className="px-4 py-2 text-sm text-white transition-colors bg-blue-600 cursor-pointer hover:bg-blue-500 md:text-base">
+                                    Editar Conta
+                                </Button>
+                            </Link>
                             <Button
                                 variant="destructive"
                                 className="px-4 py-2 text-sm cursor-pointer md:text-base"

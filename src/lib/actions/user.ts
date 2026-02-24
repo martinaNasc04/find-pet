@@ -12,6 +12,23 @@ export async function getAllUsers() {
     return result[0].count;
 }
 
+export const getUserById = async (id: string) => {
+    const user = await db
+        .select({
+            userId: usersTable.userId,
+            fullName: usersTable.fullName,
+            age: usersTable.age,
+            email: usersTable.email,
+            imageUrl: usersTable.imageUrl,
+        })
+        .from(usersTable)
+        .where(eq(usersTable.userId, Number(id)));
+    if (!user) {
+        throw new Error("User not found");
+    }
+    return user;
+};
+
 export async function getUserId() {
     const { userId: clerkId } = await auth();
 
@@ -59,7 +76,12 @@ export async function checkUser(clerkId: string) {
 export async function insertUser(prevData: any, formData: FormData) {
     const { userId: clerkId } = await auth();
 
-    if (!clerkId) throw new Error("Unauthorized");
+    if (!clerkId) {
+        return {
+            success: false,
+            message: "User não encontrado",
+        };
+    }
 
     const fullName = formData.get("fullName") as string;
     const email = formData.get("email") as string;
@@ -108,3 +130,65 @@ export async function insertUser(prevData: any, formData: FormData) {
         };
     }
 }
+
+export const updateUser = async (prevData: any, formData: FormData) => {
+    const { userId: clerkId } = await auth();
+
+    if (!clerkId) {
+        return {
+            success: false,
+            message: "User não encontrado",
+        };
+    }
+    const userId = await getUserId();
+    const fullName = formData.get("fullName") as string;
+    const email = formData.get("email") as string;
+    const age = formData.get("age");
+    const imageUrl = formData.get("imageUrl") as string;
+
+    console.log("Informações atualizadas", {
+        fullName,
+        email,
+        age,
+        imageUrl,
+    });
+    const userData = UserSchema.safeParse({
+        fullName,
+        email,
+        age,
+        imageUrl,
+        userId,
+        clerkId,
+    });
+
+    console.log("Informações validadas", userData);
+
+    if (!userData.success) {
+        const prettyMessage = z
+            .prettifyError(userData!.error)
+            .split("→")[0]
+            .trim();
+        console.log(prettyMessage);
+        return {
+            success: false,
+            message: prettyMessage,
+        };
+    }
+    console.log("Passou validação");
+    try {
+        await db
+            .update(usersTable)
+            .set(userData.data)
+            .where(eq(usersTable.userId, userId));
+        console.log("Perfil atualizado com sucesso!");
+        return {
+            success: true,
+            message: "Perfil atualizado com sucesso!",
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: `Erro ao atualizar perfil: ${error}`,
+        };
+    }
+};
