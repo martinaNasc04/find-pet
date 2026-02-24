@@ -26,6 +26,7 @@ export default function UserForm({ typeForm, userDb }: UserFormProps) {
     const { user } = useUser();
     const [state, formAction, isPending] = useActionState(action, initialState);
 
+    // Informação do usuário vindo do Clerk
     const fullName = user?.fullName as string;
     const email = user?.primaryEmailAddress?.emailAddress as string;
     const imageUrl = user?.imageUrl as string;
@@ -33,11 +34,14 @@ export default function UserForm({ typeForm, userDb }: UserFormProps) {
     useEffect(() => {
         if (state.success) {
             const timeOut = setTimeout(() => {
+                if (typeForm === "insert") {
+                    router.push("/pets");
+                }
                 router.push("/user");
             }, 3000);
             return () => clearTimeout(timeOut);
         }
-    }, [state.success, router]);
+    }, [state.success, router, typeForm]);
     return (
         <div className="min-h-screen p-8 mt-10 bg-gray-50">
             <div className="max-w-6xl mx-auto mb-2 space-y-4">
@@ -63,13 +67,6 @@ export default function UserForm({ typeForm, userDb }: UserFormProps) {
                         <form action={formAction}>
                             <div className="grid grid-cols-2 gap-6">
                                 <div className="grid gap-2 ">
-                                    {typeForm === "edit" && (
-                                        <input
-                                            type="hidden"
-                                            name="id"
-                                            value={userDb[0].userId as number}
-                                        />
-                                    )}
                                     <Label
                                         htmlFor="fullName"
                                         className="block text-sm font-medium text-gray-700 md:text-base"
@@ -125,7 +122,11 @@ export default function UserForm({ typeForm, userDb }: UserFormProps) {
                                         type="number"
                                         placeholder="Sua idade (mínimo 15 anos)"
                                         min="15"
-                                        defaultValue={userDb[0]?.age}
+                                        defaultValue={
+                                            typeForm === "edit"
+                                                ? (userDb[0].age as number)
+                                                : imageUrl
+                                        }
                                         required
                                         className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500"
                                     />

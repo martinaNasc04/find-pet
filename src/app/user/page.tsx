@@ -53,7 +53,7 @@ export default async function UserPage() {
                         </p>
 
                         <div className="flex gap-4">
-                            <Link href={`/user/edit/${userId}`}>
+                            <Link href="/user/edit">
                                 <Button className="px-4 py-2 text-sm text-white transition-colors bg-blue-600 cursor-pointer hover:bg-blue-500 md:text-base">
                                     Editar Conta
                                 </Button>

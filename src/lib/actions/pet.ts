@@ -69,6 +69,26 @@ export const getPetById = async (id: string) => {
     return pet;
 };
 
+export const verifyPostOwnership = async (id: string) => {
+    // Verificar se o usuário é dono desse pet
+    const userId = await getUserId();
+    const verifyPostOwnership = await db
+        .select()
+        .from(petsTable)
+        .where(and(eq(petsTable.id, Number(id)), eq(petsTable.userId, userId)));
+
+    if (verifyPostOwnership.length === 0) {
+        return {
+            success: false,
+            message: "Você não tem permissão para editar esse pet",
+        };
+    } else {
+        return {
+            success: true,
+        };
+    }
+};
+
 export const getUserPets = async () => {
     try {
         const userId = await getUserId();

@@ -2,7 +2,7 @@
 import { db } from "@/db";
 import { usersTable } from "@/db/schema/userSchema";
 import { auth } from "@clerk/nextjs/server";
-import { count, eq } from "drizzle-orm";
+import { and, count, eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { UserSchema } from "../validation";
 import z from "zod";
@@ -12,7 +12,8 @@ export async function getAllUsers() {
     return result[0].count;
 }
 
-export const getUserById = async (id: string) => {
+export const getUserById = async () => {
+    const id = await getUserId();
     const user = await db
         .select({
             userId: usersTable.userId,
@@ -65,7 +66,8 @@ export async function getCurrentUserInfo() {
     return user;
 }
 
-export async function checkUser(clerkId: string) {
+export async function checkUserExist() {
+    const { userId: clerkId } = await auth();
     if (!clerkId) redirect("login");
     return db
         .select({ userId: usersTable.userId })
@@ -146,12 +148,6 @@ export const updateUser = async (prevData: any, formData: FormData) => {
     const age = formData.get("age");
     const imageUrl = formData.get("imageUrl") as string;
 
-    console.log("Informações atualizadas", {
-        fullName,
-        email,
-        age,
-        imageUrl,
-    });
     const userData = UserSchema.safeParse({
         fullName,
         email,
@@ -161,26 +157,21 @@ export const updateUser = async (prevData: any, formData: FormData) => {
         clerkId,
     });
 
-    console.log("Informações validadas", userData);
-
     if (!userData.success) {
         const prettyMessage = z
             .prettifyError(userData!.error)
             .split("→")[0]
             .trim();
-        console.log(prettyMessage);
         return {
             success: false,
             message: prettyMessage,
         };
     }
-    console.log("Passou validação");
     try {
         await db
             .update(usersTable)
             .set(userData.data)
             .where(eq(usersTable.userId, userId));
-        console.log("Perfil atualizado com sucesso!");
         return {
             success: true,
             message: "Perfil atualizado com sucesso!",

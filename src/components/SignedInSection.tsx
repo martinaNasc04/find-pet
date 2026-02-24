@@ -3,13 +3,11 @@ import pawprint from "../../public/assets/paw-print.png";
 import { Button } from "./ui/button";
 import { PawPrint } from "lucide-react";
 import Image from "next/image";
-import { auth } from "@clerk/nextjs/server";
-import { checkUser } from "@/lib/actions/user";
+import { checkUserExist } from "@/lib/actions/user";
 
 export default async function SignedInSection() {
-    const { userId: clerkId } = await auth();
     // Verificar se usuário tem um perfil criado
-    const existingUser = await checkUser(clerkId || "");
+    const existingUser = await checkUserExist();
 
     return (
         <section className="relative flex items-center justify-center min-h-screen ">
@@ -20,6 +18,7 @@ export default async function SignedInSection() {
                 width={800}
                 height={800}
             />
+
             <div className="absolute items-center justify-center w-full md:flex ">
                 <div className="flex flex-col items-center space-y-4 md:w-1/2 md:space-y-6">
                     <div className="flex items-center justify-center gap-2 mb-10 ">
