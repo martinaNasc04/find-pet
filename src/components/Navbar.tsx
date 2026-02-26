@@ -3,6 +3,7 @@ import { UserButton, useUser } from "@clerk/nextjs";
 import { PawPrint } from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import MobileMenu from "./MobileMenu";
 
 const Navbar = () => {
     const { isSignedIn, isLoaded } = useUser();
@@ -21,28 +22,25 @@ const Navbar = () => {
             {!isLoaded ? (
                 <div />
             ) : isSignedIn ? (
-                <div className="flex gap-6">
-                    <Link href="/user">
-                        <Button className="px-3 py-2 font-semibold text-white transition-all bg-cyan-500 border-2 border-cyan-300 rounded-lg cursor-pointer md:px-6 hover:bg-white hover:text-cyan-500">
-                            Seu perfil
+                <div>
+                    <div className="hidden gap-6 md:flex">
+                        <Button className="px-3 py-2 font-semibold text-white transition-all border-2 rounded-lg cursor-pointer bg-cyan-500 border-cyan-300 md:px-6 hover:bg-white hover:text-cyan-500">
+                            <Link href="/user">Seu perfil</Link>
                         </Button>
-                    </Link>
-                    <Link href="/pets">
                         <Button className="px-3 py-2 font-semibold text-white transition-all bg-pink-500 border-2 border-pink-300 rounded-lg cursor-pointer md:px-6 hover:bg-white hover:text-pink-500">
-                            Pets
+                            <Link href="/pets">Pets</Link>
                         </Button>
-                    </Link>
-                    <Link href="/pets/new">
                         <Button className="px-3 py-2 font-semibold text-white transition-all bg-orange-500 border-2 border-orange-300 rounded-lg cursor-pointer md:px-6 hover:bg-white hover:text-orange-500">
-                            Anunciar um pet
+                            <Link href="/pets/new">Anunciar um pet</Link>
                         </Button>
-                    </Link>
-                    <Link href="/pets/view-pets">
                         <Button className="px-3 py-2 font-semibold text-white transition-all border-2 rounded-lg cursor-pointer mb:px-6 bg-violet-500 hover:bg-white hover:text-violet-500 border-violet-300">
-                            Visualizar pets postados
+                            <Link href="/pets/view-pets">
+                                Visualizar pets postados
+                            </Link>
                         </Button>
-                    </Link>
-                    <UserButton />
+                        <UserButton />
+                    </div>
+                    <MobileMenu />
                 </div>
             ) : (
                 <Link href="/login">
