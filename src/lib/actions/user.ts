@@ -2,7 +2,7 @@
 import { db } from "@/db";
 import { usersTable } from "@/db/schema/userSchema";
 import { auth } from "@clerk/nextjs/server";
-import { and, count, eq } from "drizzle-orm";
+import { count, eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { UserSchema } from "../validation";
 import z from "zod";
@@ -54,7 +54,6 @@ export async function getCurrentUserInfo() {
 
     const user = await db
         .select({
-            userId: usersTable.userId,
             fullName: usersTable.fullName,
             email: usersTable.email,
             imageUrl: usersTable.imageUrl,
@@ -180,6 +179,24 @@ export const updateUser = async (prevData: any, formData: FormData) => {
         return {
             success: false,
             message: `Erro ao atualizar perfil: ${error}`,
+        };
+    }
+};
+
+export const deleteUser = async () => {
+    const userId = await getUserId();
+    try {
+        await db.delete(usersTable).where(eq(usersTable.userId, userId));
+        console.log("Passou...");
+        return {
+            success: true,
+            message: "Perfil deletado com sucesso!",
+        };
+    } catch (error) {
+        console.log("Não passou");
+        return {
+            success: false,
+            message: `Erro ao deletar perfil: ${error}`,
         };
     }
 };

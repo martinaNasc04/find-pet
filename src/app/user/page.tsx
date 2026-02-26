@@ -7,7 +7,7 @@ import React from "react";
 
 export default async function UserPage() {
     const userInfo = await getCurrentUserInfo();
-    const { fullName, email, imageUrl, createdAt, userId } = userInfo[0];
+    const { fullName, email, imageUrl, createdAt } = userInfo[0];
     return (
         <div className="min-h-screen p-8 mt-10 bg-gray-50">
             <div className="max-w-6xl mx-auto mb-2">
@@ -58,12 +58,14 @@ export default async function UserPage() {
                                     Editar Conta
                                 </Button>
                             </Link>
-                            <Button
-                                variant="destructive"
-                                className="px-4 py-2 text-sm cursor-pointer md:text-base"
-                            >
-                                Deletar Conta
-                            </Button>
+                            <Link href="/user/delete">
+                                <Button
+                                    variant="destructive"
+                                    className="px-4 py-2 text-sm cursor-pointer md:text-base"
+                                >
+                                    Deletar Conta
+                                </Button>
+                            </Link>
                         </div>
                     </div>
                 </div>

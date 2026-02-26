@@ -42,3 +42,5 @@ next-env.d.ts
 
 migrations
 /src/lib/seed.ts
+
+notes.md
