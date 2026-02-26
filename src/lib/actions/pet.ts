@@ -72,6 +72,9 @@ export const getPetById = async (id: string) => {
 export const verifyPostOwnership = async (id: string) => {
     // Verificar se o usuário é dono desse pet
     const userId = await getUserId();
+    if (!userId) {
+        return null;
+    }
     const verifyPostOwnership = await db
         .select()
         .from(petsTable)
@@ -92,6 +95,9 @@ export const verifyPostOwnership = async (id: string) => {
 export const getUserPets = async () => {
     try {
         const userId = await getUserId();
+        if (!userId) {
+            return null;
+        }
         const pets = await db
             .select()
             .from(petsTable)
@@ -200,10 +206,13 @@ export const updatePet = async (prevData: any, formData: FormData) => {
     let userId;
     try {
         userId = await getUserId();
+        if (!userId) {
+            return null;
+        }
     } catch (error) {
         return {
             success: false,
-            message: `User not found: ${error}`,
+            message: `Usuário não existe: ${error}`,
         };
     }
     const petId = formData.get("id");

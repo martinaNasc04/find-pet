@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
-import { User } from "lucide-react";
+import { User, X } from "lucide-react";
 import Link from "next/link";
 
 const initialState = {
@@ -42,10 +42,25 @@ export default function UserForm({ typeForm, userDb }: UserFormProps) {
             return () => clearTimeout(timeOut);
         }
     }, [state.success, router, typeForm]);
+
+    if (userDb === undefined && typeForm === "edit") {
+        return (
+            <div className="min-h-screen p-8 mt-10 bg-gray-50">
+                <div className="max-w-6xl mx-auto mb-2 space-y-4">
+                    <div className="flex items-center justify-center gap-2 mt-4">
+                        <h1 className="text-2xl font-bold">
+                            Usuário não existe
+                        </h1>
+                        <X />
+                    </div>
+                </div>
+            </div>
+        );
+    }
     return (
         <div className="min-h-screen p-8 mt-10 bg-gray-50">
             <div className="max-w-6xl mx-auto mb-2 space-y-4">
-                <div className="flex items-center justify-center mt-4 gap-2">
+                <div className="flex items-center justify-center gap-2 mt-4">
                     <h1 className="text-2xl font-bold">
                         {typeForm === "insert"
                             ? "Crie seu Perfil"
@@ -169,16 +184,16 @@ export default function UserForm({ typeForm, userDb }: UserFormProps) {
                                     </p>
                                 </div>
                             )}
-                            <div className="flex flex-col items-center gap-4 py-4 px-4 mt-6 border-t-2 border-gray-200">
+                            <div className="flex flex-col items-center gap-4 px-4 py-4 mt-6 border-t-2 border-gray-200">
                                 <Button
                                     type="submit"
-                                    className="w-lg cursor-pointer"
+                                    className="cursor-pointer w-lg"
                                 >
                                     {isPending ? "Aguarde..." : "Salvar"}
                                 </Button>
                                 <Link
                                     href="/"
-                                    className="w-lg cursor-pointer outline flex items-center justify-center px-3 py-2 rounded-lg"
+                                    className="flex items-center justify-center px-3 py-2 rounded-lg cursor-pointer w-lg outline"
                                 >
                                     Cancelar
                                 </Link>

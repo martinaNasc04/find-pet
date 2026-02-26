@@ -20,7 +20,9 @@ export default function DeleteUserPage() {
         setIsDeleting(true);
         try {
             const result = await deleteUser();
-            if (result.success) {
+            if (!result) {
+                return alert("Erro ao deletar usuário");
+            } else if (result.success) {
                 alert(result.message);
                 router.push("/");
             } else {
@@ -28,8 +30,8 @@ export default function DeleteUserPage() {
             }
             setIsDeleting(false);
         } catch (error) {
-            setIsDeleting(false);
-            alert(`Erro ao deletar usuário: ${error}`);
+            const errorMessage = error instanceof Error ? error.message : error;
+            alert(`Erro ao deletar usuário: ${errorMessage}`);
         } finally {
             setIsDeleting(false);
         }
@@ -59,14 +61,12 @@ export default function DeleteUserPage() {
                                 {isDeleting ? "Deletando" : "Deletar"}
                             </Button>
 
-                            <Link href="/user">
-                                <Button
-                                    variant="default"
-                                    className="px-4 py-2 text-sm cursor-pointer md:text-base"
-                                >
-                                    Cancelar
-                                </Button>
-                            </Link>
+                            <Button
+                                variant="default"
+                                className="px-4 py-2 text-sm cursor-pointer md:text-base"
+                            >
+                                <Link href="/user"> Cancelar </Link>
+                            </Button>
                         </CardFooter>
                     </Card>
                 </div>
