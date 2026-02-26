@@ -30,7 +30,7 @@ export const getUserById = async () => {
             .where(eq(usersTable.userId, Number(id)));
         return user;
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return null;
     }
 };

@@ -6,7 +6,6 @@ import Link from "next/link";
 
 export default async function UserPage() {
     const userInfo = await getCurrentUserInfo();
-    console.log(typeof userInfo);
     if (!userInfo) {
         return (
             <div className="min-h-screen p-8 mt-10 bg-gray-50">
