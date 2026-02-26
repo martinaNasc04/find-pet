@@ -3,11 +3,29 @@ import { getCurrentUserInfo } from "@/lib/actions/user";
 import { PawPrint } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 
 export default async function UserPage() {
     const userInfo = await getCurrentUserInfo();
-    const { fullName, email, imageUrl, createdAt, userId } = userInfo[0];
+    console.log(typeof userInfo);
+    if (!userInfo) {
+        return (
+            <div className="min-h-screen p-8 mt-10 bg-gray-50">
+                <div className="max-w-6xl mx-auto mb-2">
+                    <div className="flex flex-col items-center justify-center gap-2 mb-4">
+                        <h1 className="text-4xl font-bold text-center text-black ">
+                            Perfil de usuário não encontrado.
+                        </h1>
+                        <Link href="/user/new">
+                            <Button className="bg-[#3F51B5] font-semibold hover:bg-[#5969C5]/90 cursor-pointer">
+                                Clique aqui para criar um perfil
+                            </Button>
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+    const { fullName, email, imageUrl, createdAt } = userInfo[0];
     return (
         <div className="min-h-screen p-8 mt-10 bg-gray-50">
             <div className="max-w-6xl mx-auto mb-2">
@@ -58,12 +76,14 @@ export default async function UserPage() {
                                     Editar Conta
                                 </Button>
                             </Link>
-                            <Button
-                                variant="destructive"
-                                className="px-4 py-2 text-sm cursor-pointer md:text-base"
-                            >
-                                Deletar Conta
-                            </Button>
+                            <Link href="/user/delete">
+                                <Button
+                                    variant="destructive"
+                                    className="px-4 py-2 text-sm cursor-pointer md:text-base"
+                                >
+                                    Deletar Conta
+                                </Button>
+                            </Link>
                         </div>
                     </div>
                 </div>

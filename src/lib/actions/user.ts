@@ -2,7 +2,7 @@
 import { db } from "@/db";
 import { usersTable } from "@/db/schema/userSchema";
 import { auth } from "@clerk/nextjs/server";
-import { and, count, eq } from "drizzle-orm";
+import { count, eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { UserSchema } from "../validation";
 import z from "zod";
@@ -14,20 +14,25 @@ export async function getAllUsers() {
 
 export const getUserById = async () => {
     const id = await getUserId();
-    const user = await db
-        .select({
-            userId: usersTable.userId,
-            fullName: usersTable.fullName,
-            age: usersTable.age,
-            email: usersTable.email,
-            imageUrl: usersTable.imageUrl,
-        })
-        .from(usersTable)
-        .where(eq(usersTable.userId, Number(id)));
-    if (!user) {
-        throw new Error("User not found");
+    if (!id) {
+        return null;
     }
-    return user;
+    try {
+        const user = await db
+            .select({
+                userId: usersTable.userId,
+                fullName: usersTable.fullName,
+                age: usersTable.age,
+                email: usersTable.email,
+                imageUrl: usersTable.imageUrl,
+            })
+            .from(usersTable)
+            .where(eq(usersTable.userId, Number(id)));
+        return user;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
 };
 
 export async function getUserId() {
@@ -42,7 +47,7 @@ export async function getUserId() {
         .where(eq(usersTable.clerkId, clerkId as string));
 
     if (user.length === 0) {
-        throw new Error("User not found");
+        return null;
     }
     const id = user[0].userId;
 
@@ -52,9 +57,12 @@ export async function getUserId() {
 export async function getCurrentUserInfo() {
     const userId = await getUserId();
 
+    if (!userId) {
+        return null;
+    }
+
     const user = await db
         .select({
-            userId: usersTable.userId,
             fullName: usersTable.fullName,
             email: usersTable.email,
             imageUrl: usersTable.imageUrl,
@@ -143,6 +151,12 @@ export const updateUser = async (prevData: any, formData: FormData) => {
         };
     }
     const userId = await getUserId();
+    if (!userId) {
+        return {
+            success: false,
+            message: "Usuário não existe",
+        };
+    }
     const fullName = formData.get("fullName") as string;
     const email = formData.get("email") as string;
     const age = formData.get("age");
@@ -180,6 +194,29 @@ export const updateUser = async (prevData: any, formData: FormData) => {
         return {
             success: false,
             message: `Erro ao atualizar perfil: ${error}`,
+        };
+    }
+};
+
+export const deleteUser = async () => {
+    const userId = await getUserId();
+    if (!userId) {
+        return {
+            success: false,
+            message: "Usuário não existe",
+        };
+    }
+    try {
+        await db.delete(usersTable).where(eq(usersTable.userId, userId));
+
+        return {
+            success: true,
+            message: "Perfil deletado com sucesso!",
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: `Erro ao deletar perfil: ${error}`,
         };
     }
 };
