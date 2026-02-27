@@ -32,15 +32,24 @@ export default async function SignedOutSection() {
                         Se você encontrou um animal perdido ou deseja adotar um
                         amigo de quatro patas, estamos aqui para ajudar!
                     </h2>
-
-                    <Link href="/login">
+                    <div className="flex items-center gap-10">
                         <Button
                             size={"lg"}
                             className="bg-[#3F51B5] font-semibold hover:bg-[#5969C5]/90 cursor-pointer"
                         >
-                            Clique aqui!
+                            <Link href="/login">Entrar</Link>
                         </Button>
-                    </Link>
+                        <Button
+                            size={"lg"}
+                            className="bg-[#3F51B5] font-semibold hover:bg-[#5969C5]/90 cursor-pointer"
+                        >
+                            <Link href="/login">Visualizar pets!</Link>
+                        </Button>
+                    </div>
+                    <p className="text-gray-700">
+                        Este é um projeto em desenvolvimento para portfolio
+                        pessoal.
+                    </p>
                 </div>
             </div>
             <Image

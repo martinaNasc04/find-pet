@@ -32,18 +32,31 @@ export default async function SignedInSection() {
                     </h2>
                     {/* Se o usuário não tiver um perfil */}
                     {existingUser.length === 0 ? (
-                        <div className="flex flex-col items-center gap-2">
+                        <div className="flex flex-col items-center space-y-5">
                             <h2 className="font-medium md:text-2xl">
                                 Parece que você não tem um perfil criado.
                             </h2>
-                            <Link href="/user/new">
+                            <div className="flex gap-10 items-center">
                                 <Button
                                     size={"lg"}
                                     className="bg-[#3F51B5] font-semibold hover:bg-[#5969C5]/90 cursor-pointer"
                                 >
-                                    Crie seu perfil aqui
+                                    <Link href="/user/new">
+                                        Crie seu perfil aqui
+                                    </Link>
                                 </Button>
-                            </Link>
+
+                                <Link
+                                    href="/pets"
+                                    className="text-[#3F51B5] font-semibold hover:text-[#5969C5]/90"
+                                >
+                                    Ou vá para a página de pets
+                                </Link>
+                            </div>
+                            <p className="text-gray-700">
+                                Este é um projeto em desenvolvimento para
+                                portfolio pessoal.
+                            </p>
                         </div>
                     ) : (
                         <div className="flex flex-col items-center gap-2">
@@ -51,14 +64,16 @@ export default async function SignedInSection() {
                                 Visualize os pets postados recentemente ou faça
                                 um novo post!
                             </h2>
-                            <Link href="/pets">
-                                <Button
-                                    size={"lg"}
-                                    className="bg-[#3F51B5] font-semibold hover:bg-[#5969C5]/90 cursor-pointer"
-                                >
-                                    Visualizar pets!
-                                </Button>
-                            </Link>
+                            <Button
+                                size={"lg"}
+                                className="bg-[#3F51B5] font-semibold hover:bg-[#5969C5]/90 cursor-pointer"
+                            >
+                                <Link href="/pets">Visualizar pets!</Link>
+                            </Button>
+                            <p className="text-gray-700">
+                                Este é um projeto em desenvolvimento para
+                                portfolio pessoal.
+                            </p>
                         </div>
                     )}
                 </div>
