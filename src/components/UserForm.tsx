@@ -35,6 +35,13 @@ export default function UserForm({ typeForm, userDb }: UserFormProps) {
     const handleUploadSuccess = (result: any) => {
         setImageUrl(result.info.secure_url);
     };
+
+    const userData = userDb?.[0] || {
+        userId: "",
+        fullName,
+        email,
+        age: 15,
+    };
     useEffect(() => {
         if (state.success) {
             const timeOut = setTimeout(() => {
@@ -97,7 +104,7 @@ export default function UserForm({ typeForm, userDb }: UserFormProps) {
                                         name="fullName"
                                         defaultValue={
                                             typeForm === "edit"
-                                                ? (userDb[0].fullName as string)
+                                                ? (userData.fullName as string)
                                                 : fullName
                                         }
                                         type="text"
@@ -119,7 +126,7 @@ export default function UserForm({ typeForm, userDb }: UserFormProps) {
                                         type="email"
                                         defaultValue={
                                             typeForm === "edit"
-                                                ? (userDb[0].email as string)
+                                                ? (userData.email as string)
                                                 : email
                                         }
                                         placeholder="Seu email"
@@ -143,7 +150,7 @@ export default function UserForm({ typeForm, userDb }: UserFormProps) {
                                         min="15"
                                         defaultValue={
                                             typeForm === "edit"
-                                                ? (userDb[0].age as number)
+                                                ? (userData.age as number)
                                                 : imageUrl
                                         }
                                         required
