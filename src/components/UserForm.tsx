@@ -3,13 +3,14 @@ import { insertUser, updateUser } from "@/lib/actions/user";
 import { UserDatabase } from "../../type";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
 import { User, X } from "lucide-react";
 import Link from "next/link";
+import { CldUploadButton } from "next-cloudinary";
 
 const initialState = {
     success: false,
@@ -29,8 +30,11 @@ export default function UserForm({ typeForm, userDb }: UserFormProps) {
     // Informação do usuário vindo do Clerk
     const fullName = user?.fullName as string;
     const email = user?.primaryEmailAddress?.emailAddress as string;
-    const imageUrl = user?.imageUrl as string;
 
+    const [imageUrl, setImageUrl] = useState<string>("");
+    const handleUploadSuccess = (result: any) => {
+        setImageUrl(result.info.secure_url);
+    };
     useEffect(() => {
         if (state.success) {
             const timeOut = setTimeout(() => {
@@ -153,19 +157,18 @@ export default function UserForm({ typeForm, userDb }: UserFormProps) {
                                     >
                                         Foto:
                                     </Label>
+                                    <CldUploadButton
+                                        onSuccess={handleUploadSuccess}
+                                        uploadPreset="findpet"
+                                        className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500"
+                                    >
+                                        Baixar imagem
+                                    </CldUploadButton>
                                     <Input
+                                        type="hidden"
                                         id="imageUrl"
                                         name="imageUrl"
-                                        type="text"
-                                        defaultValue={
-                                            typeForm === "edit"
-                                                ? (userDb[0].imageUrl as string)
-                                                : imageUrl
-                                        }
-                                        placeholder="URL da imagem do Clerk por enquanto"
-                                        min="15"
-                                        required
-                                        className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500"
+                                        value={imageUrl}
                                     />
                                 </div>
                             </div>
