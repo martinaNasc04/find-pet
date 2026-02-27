@@ -42,7 +42,7 @@ export default function PetCard({ pet, session }: PetCardProps) {
             <CardContent className="p-0">
                 {/* Image */}
                 {imageUrl ? (
-                    <div className="relative aspect-video md:aspect-square bg-gray-100 overflow-hidden">
+                    <div className="relative overflow-hidden bg-gray-100 aspect-video md:aspect-square">
                         <Image
                             src={imageUrl}
                             alt={`Photo of ${name}`}
@@ -51,15 +51,15 @@ export default function PetCard({ pet, session }: PetCardProps) {
                         />
                     </div>
                 ) : (
-                    <div className="relative w-full h-48 md:h-64 bg-gray-300 flex items-center justify-center">
-                        <p className="text-gray-500 text-lg md:text-2xl">
+                    <div className="relative flex items-center justify-center w-full h-48 bg-gray-300 md:h-64">
+                        <p className="text-lg text-gray-500 md:text-2xl">
                             Sem imagem
                         </p>
                     </div>
                 )}
 
                 <div className="p-4 space-y-2 md:p-6">
-                    <div className="flex justify-between items-center">
+                    <div className="flex items-center justify-between">
                         <h3 className="text-lg font-semibold truncate md:text-xl">
                             {name}
                         </h3>
@@ -104,12 +104,12 @@ export default function PetCard({ pet, session }: PetCardProps) {
                                         name="id"
                                         value={pet.id}
                                     />
-                                    <Button className="bg-red-500 text-white px-4 py-2 cursor-pointer">
+                                    <Button className="px-4 py-2 text-white bg-red-500 cursor-pointer">
                                         {isPending ? "Deletando..." : "Deletar"}
                                     </Button>
                                 </form>
                                 <Link href={`/pets/edit/${pet.id}`}>
-                                    <Button className="bg-blue-500 text-white text-sm md:text-base px-4 py-2 cursor-pointer">
+                                    <Button className="px-4 py-2 text-sm text-white bg-blue-500 cursor-pointer md:text-base">
                                         Editar
                                     </Button>
                                 </Link>

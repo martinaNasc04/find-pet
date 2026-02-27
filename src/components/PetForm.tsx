@@ -5,10 +5,11 @@ import { Label } from "@radix-ui/react-label";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { useRouter } from "next/navigation";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { updatePet, insertPet } from "@/lib/actions/pet";
 import Link from "next/link";
 import { PetsDatabase } from "../../type";
+import { CldUploadButton } from "next-cloudinary";
 
 const initialState = {
     success: false,
@@ -24,6 +25,12 @@ export default function PetForm({ typeForm, pet }: PetFormProps) {
     const action = typeForm === "insert" ? insertPet : updatePet;
     const router = useRouter();
     const [state, formAction, isPending] = useActionState(action, initialState);
+
+    const [imageUrl, setImageUrl] = useState<string>("");
+
+    const handleUploadSuccess = (result: any) => {
+        setImageUrl(result.info.secure_url);
+    };
 
     useEffect(() => {
         if (state.success) {
@@ -52,7 +59,7 @@ export default function PetForm({ typeForm, pet }: PetFormProps) {
                         </CardHeader>
                         <CardContent>
                             <form action={formAction}>
-                                <div className="grid grid-cols-2 items-center gap-6">
+                                <div className="grid items-center grid-cols-2 gap-6">
                                     {typeForm === "edit" && (
                                         <input
                                             type="hidden"
@@ -151,19 +158,18 @@ export default function PetForm({ typeForm, pet }: PetFormProps) {
                                         >
                                             Imagem:
                                         </Label>
+                                        <CldUploadButton
+                                            onSuccess={handleUploadSuccess}
+                                            uploadPreset="findpet"
+                                            className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500"
+                                        >
+                                            Baixar imagem
+                                        </CldUploadButton>
                                         <Input
+                                            type="hidden"
                                             id="imageUrl"
                                             name="imageUrl"
-                                            type="text"
-                                            defaultValue={
-                                                typeForm === "edit"
-                                                    ? (pet[0]
-                                                          .imageUrl as string)
-                                                    : ""
-                                            }
-                                            placeholder="Insira o link da imagem do pet (unsplash por enquanto)"
-                                            required
-                                            className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 focus:border-indigo-500"
+                                            value={imageUrl}
                                         />
                                     </div>
                                     <div className="grid gap-2">
@@ -239,7 +245,7 @@ export default function PetForm({ typeForm, pet }: PetFormProps) {
                                         </select>
                                     </div>
                                 </div>
-                                <div className="grid gap-2 mt-6 items-center">
+                                <div className="grid items-center gap-2 mt-6">
                                     <Label
                                         htmlFor="description"
                                         className="block text-sm font-medium text-gray-700 md:text-base"
@@ -277,13 +283,13 @@ export default function PetForm({ typeForm, pet }: PetFormProps) {
                                 <div className="flex flex-col items-center gap-4 px-4 mt-6 border-t-2 border-gray-200">
                                     <Button
                                         type="submit"
-                                        className="w-lg cursor-pointer"
+                                        className="cursor-pointer w-lg"
                                     >
                                         {isPending ? "Salvando..." : "Salvar"}
                                     </Button>
                                     <Link
                                         href="/pets"
-                                        className="w-lg cursor-pointer outline flex items-center justify-center px-3 py-2 rounded-lg"
+                                        className="flex items-center justify-center px-3 py-2 rounded-lg cursor-pointer w-lg outline"
                                     >
                                         Cancelar
                                     </Link>

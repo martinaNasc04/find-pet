@@ -203,18 +203,14 @@ export const insertPet = async (prevData: any, formData: FormData) => {
 };
 
 export const updatePet = async (prevData: any, formData: FormData) => {
-    let userId;
-    try {
-        userId = await getUserId();
-        if (!userId) {
-            return null;
-        }
-    } catch (error) {
+    const userId = await getUserId();
+    if (!userId) {
         return {
             success: false,
-            message: `Usuário não existe: ${error}`,
+            message: "Usuário não existe",
         };
     }
+
     const petId = formData.get("id");
     const name = formData.get("name") || "";
     const breed = formData.get("breed") || "";
