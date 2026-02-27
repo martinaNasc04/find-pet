@@ -40,3 +40,4 @@ CLOUDINARY_API_SECRET=
 6. Crie uma conta no [Clerk](https://clerk.com/), crie uma aplicação e clique na opção "Next.js" e siga as instruções para implementar Clerk no projeto
 7. Para o banco de dados, crie uma conta no [Neon](https://neon.com/), crie uma projeto e siga as instruções para obter a URL de conexão ao banco de dados.
 8. Para configurar o Drizzle, digite `npx drizzle-kit generate` e `npx drizzle-kit migrate` para fazer as migrações. Para enviar as tabelas para o Neon, digite `npx drizzle-kit push`. E para popular as tabelas digite `pnpm db:seed` ou `tsx src/lib/seed.ts`.
+9. Para configurar o [Cloudinary](https://cloudinary.com/), acesse o site e crie uma conta gratuita. Copie o nome da CLOUD_NAME e clique em 'go to API Keys', gere uma nova API Key ou copie o que está abaixo.

@@ -12,7 +12,25 @@ export default async function EditPetPage({
     const petId = resolvedParams.id[0];
     // Verificar se o usuário é dono desse post do pet
     const checkPostOwnership = await verifyPostOwnership(petId);
-    if (!checkPostOwnership.success) {
+    if (!checkPostOwnership) {
+        return (
+            <div className="min-h-screen p-8 mt-10 bg-gray-50">
+                <div className="flex flex-col items-center justify-center max-w-6xl mx-auto mb-2 space-y-4">
+                    <h1 className="text-2xl font-bold md:text-3xl">
+                        O usuário não existe
+                    </h1>
+                    <div className="flex flex-col items-center justify-center">
+                        <Link
+                            href="/pets"
+                            className="px-4 py-2 text-white bg-indigo-500 rounded-md hover:bg-indigo-600"
+                        >
+                            Voltar para pets
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        );
+    } else if (!checkPostOwnership.success) {
         return (
             <div className="min-h-screen p-8 mt-10 bg-gray-50">
                 <div className="flex flex-col items-center justify-center max-w-6xl mx-auto mb-2 space-y-4">
