@@ -24,6 +24,23 @@ export default async function ViewPetsPage() {
         );
     }
 
+    if (!pets) {
+        return (
+            <div className="min-h-screen p-8 mt-10 bg-gray-50">
+                <div className="max-w-6xl mx-auto mb-2">
+                    <div className="flex flex-col items-center justify-center">
+                        <h1 className="mb-8 text-4xl font-bold text-center text-black">
+                            Seus pets cadastrados
+                        </h1>
+                        <p className="text-2xl text-center">
+                            Erro ao buscar pets
+                        </p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-screen p-8 mt-10 bg-gray-50">
             <div className="max-w-6xl mx-auto mb-2">
