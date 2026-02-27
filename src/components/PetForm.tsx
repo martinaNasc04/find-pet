@@ -28,6 +28,18 @@ export default function PetForm({ typeForm, pet }: PetFormProps) {
 
     const [imageUrl, setImageUrl] = useState<string>("");
 
+    const petData = pet?.[0] || {
+        id: "",
+        name: "",
+        breed: "",
+        color: "",
+        typePet: "",
+        imageUrl: "",
+        age: 0,
+        location: "",
+        status: "",
+        description: "",
+    };
     const handleUploadSuccess = (result: any) => {
         setImageUrl(result.info.secure_url);
     };
@@ -64,7 +76,7 @@ export default function PetForm({ typeForm, pet }: PetFormProps) {
                                         <input
                                             type="hidden"
                                             name="id"
-                                            value={pet[0].id as number}
+                                            value={petData.id}
                                         />
                                     )}
 
@@ -81,7 +93,7 @@ export default function PetForm({ typeForm, pet }: PetFormProps) {
                                             type="text"
                                             defaultValue={
                                                 typeForm === "edit"
-                                                    ? (pet[0].name as string)
+                                                    ? (petData.name as string)
                                                     : ""
                                             }
                                             placeholder="Insira o nome do pet"
@@ -101,7 +113,7 @@ export default function PetForm({ typeForm, pet }: PetFormProps) {
                                             type="text"
                                             defaultValue={
                                                 typeForm === "edit"
-                                                    ? (pet[0].breed as string)
+                                                    ? (petData.breed as string)
                                                     : ""
                                             }
                                             placeholder="Husky, vira-lata, persa..."
@@ -122,7 +134,7 @@ export default function PetForm({ typeForm, pet }: PetFormProps) {
                                             type="text"
                                             defaultValue={
                                                 typeForm === "edit"
-                                                    ? (pet[0].color as string)
+                                                    ? (petData.color as string)
                                                     : ""
                                             }
                                             placeholder="Insira a cor do pet"
@@ -143,7 +155,7 @@ export default function PetForm({ typeForm, pet }: PetFormProps) {
                                             type="text"
                                             defaultValue={
                                                 typeForm === "edit"
-                                                    ? (pet[0].typePet as string)
+                                                    ? (petData.typePet as string)
                                                     : ""
                                             }
                                             placeholder="Gato ou cachorro..."
@@ -186,7 +198,7 @@ export default function PetForm({ typeForm, pet }: PetFormProps) {
                                             min="0"
                                             defaultValue={
                                                 typeForm === "edit"
-                                                    ? (pet[0].age as number)
+                                                    ? (petData.age as number)
                                                     : 0
                                             }
                                             placeholder="Insira a idade se souber"
@@ -206,7 +218,7 @@ export default function PetForm({ typeForm, pet }: PetFormProps) {
                                             type="text"
                                             defaultValue={
                                                 typeForm === "edit"
-                                                    ? pet[0].location
+                                                    ? petData.location
                                                     : ""
                                             }
                                             placeholder="Ex: SP, Campinas"
@@ -227,7 +239,7 @@ export default function PetForm({ typeForm, pet }: PetFormProps) {
                                             name="status"
                                             defaultValue={
                                                 typeForm === "edit"
-                                                    ? pet[0].status
+                                                    ? petData.status
                                                     : "encontrado"
                                             }
                                             required
@@ -257,7 +269,7 @@ export default function PetForm({ typeForm, pet }: PetFormProps) {
                                         name="description"
                                         defaultValue={
                                             typeForm === "edit"
-                                                ? (pet[0].description as string)
+                                                ? (petData.description as string)
                                                 : ""
                                         }
                                         rows={4}
