@@ -43,7 +43,7 @@ export default async function SignedOutSection() {
                             size={"lg"}
                             className="bg-[#3F51B5] font-semibold hover:bg-[#5969C5]/90 cursor-pointer"
                         >
-                            <Link href="/login">Visualizar pets!</Link>
+                            <Link href="/pets">Visualizar pets!</Link>
                         </Button>
                     </div>
                     <p className="text-gray-700">

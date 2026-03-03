@@ -197,13 +197,13 @@ export default function UserForm({ typeForm, userDb }: UserFormProps) {
                             <div className="flex flex-col items-center gap-4 px-4 py-4 mt-6 border-t-2 border-gray-200">
                                 <Button
                                     type="submit"
-                                    className="cursor-pointer w-lg"
+                                    className="cursor-pointer w-sm md:w-lg"
                                 >
                                     {isPending ? "Aguarde..." : "Salvar"}
                                 </Button>
                                 <Link
                                     href="/"
-                                    className="flex items-center justify-center px-3 py-2 rounded-lg cursor-pointer w-lg outline"
+                                    className="flex items-center justify-center px-3 py-2 rounded-lg cursor-pointer w-sm md:w-lg outline"
                                 >
                                     Cancelar
                                 </Link>
